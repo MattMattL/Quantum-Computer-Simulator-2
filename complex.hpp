@@ -1,0 +1,4 @@
+#ifndef HPP_COMPLEX_DEFINED
+#define HPP_COMPLEX_DEFINED
+
+#endif
