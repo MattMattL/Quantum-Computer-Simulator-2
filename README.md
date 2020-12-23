@@ -7,4 +7,3 @@ This is the second version of my original quantum computer simulator, Qumulator.
 More header files and classes will gradually be added to implement a working quantum computer simulator:
 
 _Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm_
-
