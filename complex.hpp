@@ -1,5 +1,5 @@
-#ifndef HPP_COMPLEX_DEFINED
-#define HPP_COMPLEX_DEFINED
+#ifndef QUMULATOR_COMPLEX_HPP
+#define QUMULATOR_COMPLEX_HPP
 
 #include <string>
 #include <cmath>
