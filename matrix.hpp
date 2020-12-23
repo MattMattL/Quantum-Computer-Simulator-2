@@ -1,5 +1,5 @@
-#ifndef HPP_MATRIX_DEFINED
-#define HPP_MATRIX_DEFINED
+#ifndef QUMULATOR_HPP_MATRIX
+#define QUMULATOR_HPP_MATRIX
 
 #define Entry Complex
 
@@ -62,7 +62,7 @@ Matrix<T>::~Matrix()
 {
 	// This deleting method causes memory issues,
 	// use seperate ::remove function
-	
+
 	// for(int i=0; i<ROWS; i++)
 		// delete[] matrix[i];
 
