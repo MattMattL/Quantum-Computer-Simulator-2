@@ -61,7 +61,7 @@ public:
 	int rows();
 	int cols();
 	void copy(Matrix);
-	Complex<T>** pointer();
+	Complex<T>** ptr();
 
 	/* Debugging */
 	void printRe();
@@ -186,8 +186,6 @@ void Matrix<T>::transpose()
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
 			result.set(j, i, matrix[i][j]);
-
-	// matrix = result.pointer();
 
 	remove();
 
@@ -355,7 +353,7 @@ void Matrix<T>::copy(Matrix m)
 }
 
 template <class T>
-Complex<T>** Matrix<T>::pointer()
+Complex<T>** Matrix<T>::ptr()
 {
 	return matrix;
 }
