@@ -30,12 +30,12 @@ public:
 	void setRe(int, int, T);
 	void setIm(int, int, T);
 	void set(int, int, T, T);
-	void set(int, int, Entry<T>);
+	void set(int, int, Complex<T>);
 
 	void setAllRe(T);
 	void setAllIm(T);
 	void setAll(T, T);
-	void setAll(Entry<T>);
+	void setAll(Complex<T>);
 
 	Entry<T> get(int, int);
 
@@ -86,10 +86,10 @@ Matrix<T>::~Matrix()
 template <class T>
 void Matrix<T>::initialise()
 {
-	matrix = new Entry<T>*[ROWS];
+	matrix = new Complex<T>*[ROWS];
 
 	for(int i=0; i<ROWS; ++i)
-		matrix[i] = new Entry<T>[COLS];
+		matrix[i] = new Complex<T>[COLS];
 }
 
 template <class T>
@@ -122,7 +122,7 @@ void Matrix<T>::set(int row, int col, T re, T im)
 }
 
 template <class T>
-void Matrix<T>::set(int row, int col, Entry<T> c)
+void Matrix<T>::set(int row, int col, Complex<T> c)
 {
 	matrix[row][col] = c;
 }
@@ -264,7 +264,7 @@ Matrix<T> Matrix<T>::operator * (Matrix m)
 	{
 		for(int j=0; j<result.cols(); ++j)
 		{
-			Entry<T> sum(0, 0);
+			Complex<T> sum(0, 0);
 
 			for(int k=0; k<cols(); ++k)
 				sum += get(i, k) * m.get(k, j);
@@ -296,7 +296,7 @@ void Matrix<T>::operator *= (Matrix m)
 	{
 		for(int j=0; j<result.cols(); ++j)
 		{
-			Entry<T> sum(0, 0);
+			Complex<T> sum(0, 0);
 
 			for(int k=0; k<cols(); ++k)
 				sum += get(i, k) * m.get(k, j);
