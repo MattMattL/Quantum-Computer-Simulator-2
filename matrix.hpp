@@ -64,8 +64,8 @@ public:
 	Complex<T>** pointer();
 
 	/* Debugging */
-	void printRe(int);
-	void print(int);
+	void printRe();
+	void print();
 	
 };
 
@@ -363,11 +363,8 @@ Complex<T>** Matrix<T>::pointer()
 /* Debugging */
 
 template <class T>
-void Matrix<T>::printRe(int maxDim)
+void Matrix<T>::printRe()
 {
-	if(rows() > maxDim)
-		return;
-
 	for(int i=0; i<rows(); ++i)
 	{
 		for(int j=0; j<cols(); ++j)
@@ -380,11 +377,8 @@ void Matrix<T>::printRe(int maxDim)
 }
 
 template <class T>
-void Matrix<T>::print(int maxDim)
+void Matrix<T>::print()
 {
-	if(rows() > maxDim)
-		return;
-
 	for(int i=0; i<rows(); ++i)
 	{
 		for(int j=0; j<cols(); ++j)
