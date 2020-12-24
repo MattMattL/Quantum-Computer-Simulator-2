@@ -44,6 +44,8 @@ public:
 	void transpose();
 
 	/* Arithmetic Operations */
+	void operator = (Matrix);
+
 	Matrix<T> operator + (Matrix);
 	Matrix<T> operator - (Matrix);
 	void operator += (Matrix);
@@ -198,6 +200,15 @@ void Matrix<T>::transpose()
 }
 
 /* Arithmetic Operations */
+
+template <class T>
+void Matrix<T>::operator = (Matrix m)
+{
+	cout << "=" << endl;
+
+	copy(m);
+	m.remove();
+}
 
 template <class T>
 Matrix<T> Matrix<T>::operator + (Matrix m)
