@@ -20,20 +20,22 @@ private:
 	}
 
 public:
-	/* Constructor and Deconstructor */
+	/* Initialisation */
 	Matrix(int, int);
 	~Matrix();
+	void initialise();
 	void remove();
 
 	/* Setters and Getters */
-	void set(int, int, Entry<T>);
-	void set(int, int, T, T);
 	void setRe(int, int, T);
 	void setIm(int, int, T);
+	void set(int, int, T, T);
+	void set(int, int, Entry<T>);
 
 	void setAllRe(T);
 	void setAllIm(T);
 	void setAll(T, T);
+	void setAll(Entry<T>);
 
 	Entry<T> get(int, int);
 
@@ -62,26 +64,32 @@ public:
 	Complex<T>** pointer();
 
 	/* Debugging */
-	void print();
+	void printRe(int);
 	void print(int);
 	
 };
 
-/* Constructor and Deconstructor */
+/* Initialisation */
 
 template <class T>
 Matrix<T>::Matrix(int rows, int cols) : ROWS(rows), COLS(cols)
 {
-	matrix = new Entry<T>*[ROWS];
-
-	for(int i=0; i<ROWS; ++i)
-		matrix[i] = new Entry<T>[COLS];
+	initialise();
 }
 
 template <class T>
 Matrix<T>::~Matrix()
 {
 
+}
+
+template <class T>
+void Matrix<T>::initialise()
+{
+	matrix = new Entry<T>*[ROWS];
+
+	for(int i=0; i<ROWS; ++i)
+		matrix[i] = new Entry<T>[COLS];
 }
 
 template <class T>
@@ -96,18 +104,6 @@ void Matrix<T>::remove()
 /* Setters and Getters */
 
 template <class T>
-void Matrix<T>::set(int row, int col, Entry<T> value)
-{
-	matrix[row][col] = value;
-}
-
-template <class T>
-void Matrix<T>::set(int row, int col, T re, T im)
-{
-	matrix[row][col].set(re, im);
-}
-
-template <class T>
 void Matrix<T>::setRe(int row, int col, T value)
 {
 	matrix[row][col].setRe(value);
@@ -117,6 +113,18 @@ template <class T>
 void Matrix<T>::setIm(int row, int col, T value)
 {
 	matrix[row][col].setIm(value);
+}
+
+template <class T>
+void Matrix<T>::set(int row, int col, T re, T im)
+{
+	matrix[row][col].set(re, im);
+}
+
+template <class T>
+void Matrix<T>::set(int row, int col, Entry<T> c)
+{
+	matrix[row][col] = c;
 }
 
 template <class T>
@@ -141,6 +149,14 @@ void Matrix<T>::setAll(T re, T im)
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
 			matrix[i][j].set(re, im);
+}
+
+template <class T>
+void Matrix<T>::setAll(Complex<T> c)
+{
+	for(int i=0; i<rows(); ++i)
+		for(int j=0; j<cols(); ++j)
+			matrix[i][j].set(c.getRe(), c.getIm());
 }
 
 template <class T>
@@ -171,14 +187,16 @@ void Matrix<T>::transpose()
 		for(int j=0; j<cols(); ++j)
 			result.set(j, i, matrix[i][j]);
 
-	matrix = result.pointer();
+	// matrix = result.pointer();
+
+	remove();
 
 	int temp = ROWS;
 	ROWS = COLS;
 	COLS = temp;
 
-	cout << ROWS << endl;
-	cout << COLS << endl;
+	initialise();
+	copy(result);
 }
 
 /* Arithmetic Operations */
@@ -345,25 +363,40 @@ Complex<T>** Matrix<T>::pointer()
 /* Debugging */
 
 template <class T>
-void Matrix<T>::print()
+void Matrix<T>::printRe(int maxDim)
 {
+	if(rows() > maxDim)
+		return;
+
 	for(int i=0; i<rows(); ++i)
 	{
 		for(int j=0; j<cols(); ++j)
-		{
-			// matrix[i][j].print(); cout << "\t";
 			printf("%3.0f ", get(i, j).getRe());
-		}
+		
 		cout << endl;
 	}
+
 	cout << endl;
 }
 
 template <class T>
 void Matrix<T>::print(int maxDim)
 {
-	if(rows() < maxDim)
-		print();
+	if(rows() > maxDim)
+		return;
+
+	for(int i=0; i<rows(); ++i)
+	{
+		for(int j=0; j<cols(); ++j)
+		{
+			matrix[i][j].print();
+			cout << "\t";
+		}
+
+		cout << endl;
+	}
+
+	cout << endl;
 }
 
 #endif
