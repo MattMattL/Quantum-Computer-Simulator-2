@@ -241,9 +241,9 @@ void Complex<T>::print()
 	cout << abs(real);
 
 	if(imaginary < 0)
-		cout << " - ";
+		cout << "-";
 	else
-		cout << " + ";
+		cout << "+";
 
 	cout << abs(imaginary) << "i";
 }
