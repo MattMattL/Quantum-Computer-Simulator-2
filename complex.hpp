@@ -253,14 +253,14 @@ void Complex<T>::print()
 	if(real < 0)
 		cout << "-";
 
-	cout << abs(real);
+	printf("%5.3f", abs(real));
 
 	if(imaginary < 0)
-		cout << "-";
+		cout << " - ";
 	else
-		cout << "+";
+		cout << " + ";
 
-	cout << abs(imaginary) << "i";
+	printf("%5.3fi", abs(imaginary));
 }
 
 #endif

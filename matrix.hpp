@@ -469,6 +469,8 @@ void Matrix<T>::print()
 {
 	for(int i=0; i<rows(); ++i)
 	{
+		cout << ((i != 0)? "  " : ": ");
+
 		for(int j=0; j<cols(); ++j)
 		{
 			matrix[i][j].print();
