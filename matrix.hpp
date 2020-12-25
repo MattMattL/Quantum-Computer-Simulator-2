@@ -23,7 +23,7 @@ public:
 	/* Initialisation */
 	Matrix(int, int);
 	~Matrix();
-	void initialise();
+	void initialise(int, int);
 	void remove();
 
 	/* Setters and Getters */
@@ -74,9 +74,9 @@ public:
 /* Initialisation */
 
 template<class T>
-Matrix<T>::Matrix(int rows, int cols) : ROWS(rows), COLS(cols)
+Matrix<T>::Matrix(int rows, int cols)
 {
-	initialise();
+	initialise(rows, cols);
 }
 
 template<class T>
@@ -86,8 +86,11 @@ Matrix<T>::~Matrix()
 }
 
 template<class T>
-void Matrix<T>::initialise()
+void Matrix<T>::initialise(int rows, int cols)
 {
+	ROWS = rows;
+	COLS = cols;
+
 	matrix = new Complex<T>*[ROWS];
 
 	for(int i=0; i<ROWS; ++i)
@@ -190,12 +193,8 @@ void Matrix<T>::transpose()
 			result.set(j, i, matrix[i][j]);
 
 	remove();
+	initialise(result.rows(), result.cols());
 
-	int temp = ROWS;
-	ROWS = COLS;
-	COLS = temp;
-
-	initialise();
 	copy(result);
 }
 
@@ -204,7 +203,11 @@ void Matrix<T>::transpose()
 template<class T>
 void Matrix<T>::operator = (Matrix m)
 {
-	cout << "=" << endl;
+	if(rows() != m.rows() || cols() != cols())
+	{
+		remove();
+		initialise(m.rows(), m.cols());
+	}
 
 	copy(m);
 	m.remove();
