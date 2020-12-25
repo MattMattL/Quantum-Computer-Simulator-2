@@ -12,6 +12,11 @@ private:
 	Entry<T> **matrix;
 	int ROWS, COLS;
 
+	bool isInBoundary(int row, int col)
+	{
+		return (0 <= row && row < ROWS) && (0 <= col && col < COLS);
+	}
+
 	void barf(string function, string message)
 	{
 		cout << "[error] " << "<" << function << ">";
@@ -113,24 +118,36 @@ void Matrix<T>::remove()
 template<class T>
 void Matrix<T>::setRe(int row, int col, T value)
 {
+	if(!isInBoundary(row, col))
+		barf("setRe", "entry out of boundary");
+
 	matrix[row][col].setRe(value);
 }
 
 template<class T>
 void Matrix<T>::setIm(int row, int col, T value)
 {
+	if(!isInBoundary(row, col))
+		barf("setRe", "entry out of boundary");
+
 	matrix[row][col].setIm(value);
 }
 
 template<class T>
 void Matrix<T>::set(int row, int col, T re, T im)
 {
+	if(!isInBoundary(row, col))
+		barf("setRe", "entry out of boundary");
+
 	matrix[row][col].set(re, im);
 }
 
 template<class T>
 void Matrix<T>::set(int row, int col, Complex<T> c)
 {
+	if(!isInBoundary(row, col))
+		barf("setRe", "entry out of boundary");
+
 	matrix[row][col] = c;
 }
 
