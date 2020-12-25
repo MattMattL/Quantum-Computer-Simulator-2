@@ -215,11 +215,6 @@ Matrix<T> Matrix<T>::transpose()
 			result.set(j, i, matrix[i][j]);
 
 	return result;
-
-	// remove();
-	// initialise(result.rows(), result.cols());
-
-	// copy(result);
 }
 
 /* Arithmetic Operations */
@@ -272,6 +267,7 @@ bool Matrix<T>::operator != (Matrix m)
 
 	return false;
 }
+
 
 template<class T>
 Matrix<T> Matrix<T>::operator + (Matrix m)
@@ -439,6 +435,8 @@ void Matrix<T>::printRe()
 {
 	for(int i=0; i<rows(); ++i)
 	{
+		cout << ((i != 0)? " " : ":");
+
 		for(int j=0; j<cols(); ++j)
 			printf("%3.0f ", get(i, j).getRe());
 
