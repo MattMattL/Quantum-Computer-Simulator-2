@@ -397,7 +397,7 @@ void Matrix<T>::operator /= (Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] *= c;
+			matrix[i][j] /= c;
 }
 
 /* Utilities */
