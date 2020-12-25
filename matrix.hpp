@@ -66,6 +66,8 @@ public:
 	Matrix<T> operator / (Complex<T>);
 	void operator /= (Complex<T>);
 
+	Matrix<T> tensor(Matrix<T>);
+
 	/* Utilities */
 	int rows();
 	int cols();
@@ -398,6 +400,24 @@ void Matrix<T>::operator /= (Complex<T> c)
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
 			matrix[i][j] /= c;
+}
+
+template<class T>
+Matrix<T> Matrix<T>::tensor(Matrix<T> m)
+{
+	Matrix<T> result(rows() * m.rows(), cols() * m.cols());
+
+	for(int i=0; i<result.rows(); i++)
+	{
+		for(int j=0; j<result.cols(); j++)
+		{
+			result.set(i, j, 
+				get(i / m.rows(), j / m.cols()) *
+				m.get(i % m.rows(), j % m.cols()));
+		}
+	}
+
+	return result;
 }
 
 /* Utilities */
