@@ -68,24 +68,24 @@ public:
 	/* Debugging */
 	void printRe();
 	void print();
-	
+
 };
 
 /* Initialisation */
 
-template <class T>
+template<class T>
 Matrix<T>::Matrix(int rows, int cols) : ROWS(rows), COLS(cols)
 {
 	initialise();
 }
 
-template <class T>
+template<class T>
 Matrix<T>::~Matrix()
 {
 
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::initialise()
 {
 	matrix = new Complex<T>*[ROWS];
@@ -94,7 +94,7 @@ void Matrix<T>::initialise()
 		matrix[i] = new Complex<T>[COLS];
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::remove()
 {
 	for(int i=0; i<ROWS; ++i)
@@ -105,31 +105,31 @@ void Matrix<T>::remove()
 
 /* Setters and Getters */
 
-template <class T>
+template<class T>
 void Matrix<T>::setRe(int row, int col, T value)
 {
 	matrix[row][col].setRe(value);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::setIm(int row, int col, T value)
 {
 	matrix[row][col].setIm(value);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::set(int row, int col, T re, T im)
 {
 	matrix[row][col].set(re, im);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::set(int row, int col, Complex<T> c)
 {
 	matrix[row][col] = c;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::setAllRe(T value)
 {
 	for(int i=0; i<rows(); ++i)
@@ -137,7 +137,7 @@ void Matrix<T>::setAllRe(T value)
 			matrix[i][j].setRe(value);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::setAllIm(T value)
 {
 	for(int i=0; i<rows(); ++i)
@@ -145,7 +145,7 @@ void Matrix<T>::setAllIm(T value)
 			matrix[i][j].setIm(value);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::setAll(T re, T im)
 {
 	for(int i=0; i<rows(); ++i)
@@ -153,7 +153,7 @@ void Matrix<T>::setAll(T re, T im)
 			matrix[i][j].set(re, im);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::setAll(Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
@@ -161,7 +161,7 @@ void Matrix<T>::setAll(Complex<T> c)
 			matrix[i][j].set(c.getRe(), c.getIm());
 }
 
-template <class T>
+template<class T>
 Entry<T> Matrix<T>::get(int row, int col)
 {
 	return matrix[row][col];
@@ -169,7 +169,7 @@ Entry<T> Matrix<T>::get(int row, int col)
 
 /* Matrix Manipulation */
 
-template <class T>
+template<class T>
 void Matrix<T>::setToI()
 {
 	if(rows() != cols())
@@ -180,7 +180,7 @@ void Matrix<T>::setToI()
 			set(i, j, (i == j)? 1 : 0, 0);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::transpose()
 {
 	Matrix<T> result(cols(), rows());
@@ -201,7 +201,7 @@ void Matrix<T>::transpose()
 
 /* Arithmetic Operations */
 
-template <class T>
+template<class T>
 void Matrix<T>::operator = (Matrix m)
 {
 	cout << "=" << endl;
@@ -210,7 +210,7 @@ void Matrix<T>::operator = (Matrix m)
 	m.remove();
 }
 
-template <class T>
+template<class T>
 Matrix<T> Matrix<T>::operator + (Matrix m)
 {
 	Matrix<T> result(rows(), cols());
@@ -222,7 +222,7 @@ Matrix<T> Matrix<T>::operator + (Matrix m)
 	return result;
 }
 
-template <class T>
+template<class T>
 Matrix<T> Matrix<T>::operator - (Matrix m)
 {
 	Matrix<T> result(rows(), cols());
@@ -234,7 +234,7 @@ Matrix<T> Matrix<T>::operator - (Matrix m)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::operator += (Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
@@ -242,7 +242,7 @@ void Matrix<T>::operator += (Matrix m)
 			matrix[i][j] += m.get(i, j);
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::operator -= (Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
@@ -251,7 +251,7 @@ void Matrix<T>::operator -= (Matrix m)
 }
 
 
-template <class T>
+template<class T>
 Matrix<T> Matrix<T>::operator * (Complex<T> c)
 {
 	Matrix<T> result(rows(), cols());
@@ -263,7 +263,7 @@ Matrix<T> Matrix<T>::operator * (Complex<T> c)
 	return result;
 }
 
-template <class T>
+template<class T>
 Matrix<T> Matrix<T>::operator * (Matrix m)
 {
 	if(cols() != m.rows())
@@ -287,7 +287,7 @@ Matrix<T> Matrix<T>::operator * (Matrix m)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::operator *= (Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
@@ -295,7 +295,7 @@ void Matrix<T>::operator *= (Complex<T> c)
 			matrix[i][j] *= c;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::operator *= (Matrix m)
 {
 	if(cols() != m.rows())
@@ -321,7 +321,7 @@ void Matrix<T>::operator *= (Matrix m)
 }
 
 
-template <class T>
+template<class T>
 Matrix<T> Matrix<T>::operator / (Complex<T> c)
 {
 	Matrix<T> result(rows(), cols());
@@ -333,7 +333,7 @@ Matrix<T> Matrix<T>::operator / (Complex<T> c)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::operator /= (Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
@@ -343,19 +343,19 @@ void Matrix<T>::operator /= (Complex<T> c)
 
 /* Utilities */
 
-template <class T>
+template<class T>
 int Matrix<T>::rows()
 {
 	return ROWS;
 }
 
-template <class T>
+template<class T>
 int Matrix<T>::cols()
 {
 	return COLS;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::copy(Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
@@ -363,7 +363,7 @@ void Matrix<T>::copy(Matrix m)
 			matrix[i][j] = m.get(i, j);
 }
 
-template <class T>
+template<class T>
 Complex<T>** Matrix<T>::ptr()
 {
 	return matrix;
@@ -371,21 +371,21 @@ Complex<T>** Matrix<T>::ptr()
 
 /* Debugging */
 
-template <class T>
+template<class T>
 void Matrix<T>::printRe()
 {
 	for(int i=0; i<rows(); ++i)
 	{
 		for(int j=0; j<cols(); ++j)
 			printf("%3.0f ", get(i, j).getRe());
-		
+
 		cout << endl;
 	}
 
 	cout << endl;
 }
 
-template <class T>
+template<class T>
 void Matrix<T>::print()
 {
 	for(int i=0; i<rows(); ++i)

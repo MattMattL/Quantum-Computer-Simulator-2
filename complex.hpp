@@ -6,7 +6,7 @@
 
 using namespace std;
 
-template <class T>
+template<class T>
 class Complex
 {
 private:
@@ -53,21 +53,21 @@ public:
 
 /* Constructor and Deconstructor */
 
-template <class T>
+template<class T>
 Complex<T>::Complex()
 {
 	setRe(0);
 	setIm(0);
 }
 
-template <class T>
+template<class T>
 Complex<T>::Complex(T realIn, T imaginaryIn)
 {
 	setRe(realIn);
 	setIm(imaginaryIn);
 }
 
-template <class T>
+template<class T>
 Complex<T>::~Complex()
 {
 
@@ -75,32 +75,32 @@ Complex<T>::~Complex()
 
 /* Setters and Getters */
 
-template <class T>
+template<class T>
 void Complex<T>::setRe(T realIn)
 {
 	real = realIn;
 }
 
-template <class T>
+template<class T>
 void Complex<T>::setIm(T imaginaryIn)
 {
 	imaginary = imaginaryIn;
 }
 
-template <class T>
+template<class T>
 void Complex<T>::set(T realIn, T imaginaryIn)
 {
 	real = realIn;
 	imaginary = imaginaryIn;
 }
 
-template <class T>
+template<class T>
 T Complex<T>::getRe()
 {
 	return real;
 }
 
-template <class T>
+template<class T>
 T Complex<T>::getIm()
 {
 	return imaginary;
@@ -108,7 +108,7 @@ T Complex<T>::getIm()
 
 /* Arithmetic Operations */
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator + (Complex c)
 {
 	Complex result(getRe() + c.getRe(), getIm() + c.getIm());
@@ -116,7 +116,7 @@ Complex<T> Complex<T>::operator + (Complex c)
 	return result;
 }
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator - (Complex c)
 {
 	Complex result(getRe() - c.getRe(), getIm() - c.getIm());
@@ -124,14 +124,14 @@ Complex<T> Complex<T>::operator - (Complex c)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator += (Complex c)
 {
 	setRe(getRe() + c.getRe());
 	setIm(getIm() + c.getIm());
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator -= (Complex c)
 {
 	setRe(getRe() - c.getRe());
@@ -139,7 +139,7 @@ void Complex<T>::operator -= (Complex c)
 }
 
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator * (T factor)
 {
 	Complex result(factor * getRe(), factor * getIm());
@@ -147,7 +147,7 @@ Complex<T> Complex<T>::operator * (T factor)
 	return result;
 }
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator * (Complex c)
 {
 	Complex result;
@@ -158,14 +158,14 @@ Complex<T> Complex<T>::operator * (Complex c)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator *= (T factor)
 {
 	setRe(factor * getRe());
 	setIm(factor * getIm());
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator *= (Complex c)
 {
 	T newRe = getRe() * c.getRe() - getIm() * c.getIm();
@@ -176,7 +176,7 @@ void Complex<T>::operator *= (Complex c)
 }
 
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator / (T factor)
 {
 	Complex result(factor / getRe(), factor / getIm());
@@ -184,7 +184,7 @@ Complex<T> Complex<T>::operator / (T factor)
 	return result;
 }
 
-template <class T>
+template<class T>
 Complex<T> Complex<T>::operator / (Complex c)
 {
 	Complex result;
@@ -196,14 +196,14 @@ Complex<T> Complex<T>::operator / (Complex c)
 	return result;
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator /= (T factor)
 {
 	setRe(getRe() / factor);
 	setIm(getIm() / factor);
 }
 
-template <class T>
+template<class T>
 void Complex<T>::operator /= (Complex c)
 {
 	Complex result;
@@ -218,13 +218,13 @@ void Complex<T>::operator /= (Complex c)
 
 /* Mathematical Functions */
 
-template <class T>
+template<class T>
 T Complex<T>::norm()
 {
 	return sqrt(getRe() * getRe() + getIm() * getIm());
 }
 
-template <class T>
+template<class T>
 T Complex<T>::normSq()
 {
 	return getRe() * getRe() + getIm() * getIm();
@@ -232,7 +232,7 @@ T Complex<T>::normSq()
 
 /* Utilities */
 
-template <class T>
+template<class T>
 void Complex<T>::print()
 {
 	if(real < 0)
