@@ -1,15 +1,13 @@
 #ifndef QUMULATOR_MATRIX_HPP
 #define QUMULATOR_MATRIX_HPP
 
-#define Entry Complex
-
 #include "complex.hpp"
 
 template<class T>
 class Matrix
 {
 private:
-	Entry<T> **matrix;
+	Complex<T> **matrix;
 	int ROWS, COLS;
 
 	bool isInBoundary(int row, int col)
@@ -42,7 +40,7 @@ public:
 	void setAll(T, T);
 	void setAll(Complex<T>);
 
-	Entry<T> get(int, int);
+	Complex<T> get(int, int);
 
 	/* Matrix Manipulation */
 	void setToI();
@@ -186,7 +184,7 @@ void Matrix<T>::setAll(Complex<T> c)
 }
 
 template<class T>
-Entry<T> Matrix<T>::get(int row, int col)
+Complex<T> Matrix<T>::get(int row, int col)
 {
 	if(!isInBoundary(row, col))
 		barf("get", "entry out of boundary");
