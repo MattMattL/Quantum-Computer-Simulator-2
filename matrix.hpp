@@ -128,7 +128,7 @@ template<class T>
 void Matrix<T>::setIm(int row, int col, T value)
 {
 	if(!isInBoundary(row, col))
-		barf("setRe", "entry out of boundary");
+		barf("setIm", "entry out of boundary");
 
 	matrix[row][col].setIm(value);
 }
@@ -137,7 +137,7 @@ template<class T>
 void Matrix<T>::set(int row, int col, T re, T im)
 {
 	if(!isInBoundary(row, col))
-		barf("setRe", "entry out of boundary");
+		barf("set(T, T)", "entry out of boundary");
 
 	matrix[row][col].set(re, im);
 }
@@ -146,7 +146,7 @@ template<class T>
 void Matrix<T>::set(int row, int col, Complex<T> c)
 {
 	if(!isInBoundary(row, col))
-		barf("setRe", "entry out of boundary");
+		barf("set(Complex<T>)", "entry out of boundary");
 
 	matrix[row][col] = c;
 }
@@ -186,6 +186,9 @@ void Matrix<T>::setAll(Complex<T> c)
 template<class T>
 Entry<T> Matrix<T>::get(int row, int col)
 {
+	if(!isInBoundary(row, col))
+		barf("get", "entry out of boundary");
+
 	return matrix[row][col];
 }
 
