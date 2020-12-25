@@ -27,6 +27,9 @@ public:
 	T getIm();
 
 	/* Arithmetic Operators */
+	bool operator == (Complex);
+	bool operator != (Complex);
+
 	Complex<T> operator + (Complex);
 	Complex<T> operator - (Complex);
 	void operator += (Complex);
@@ -107,6 +110,18 @@ T Complex<T>::getIm()
 }
 
 /* Arithmetic Operations */
+
+template<class T>
+bool Complex<T>::operator == (Complex c)
+{
+	return (getRe() == c.getRe()) && (getIm() == c.getIm());
+}
+
+template<class T>
+bool Complex<T>::operator != (Complex c)
+{
+	return (getRe() != c.getRe()) || (getIm() != c.getIm());
+}
 
 template<class T>
 Complex<T> Complex<T>::operator + (Complex c)

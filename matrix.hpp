@@ -45,6 +45,8 @@ public:
 
 	/* Arithmetic Operations */
 	void operator = (Matrix);
+	bool operator == (Matrix);
+	bool operator != (Matrix);
 
 	Matrix<T> operator + (Matrix);
 	Matrix<T> operator - (Matrix);
@@ -213,6 +215,42 @@ void Matrix<T>::operator = (Matrix m)
 
 	copy(m);
 	m.remove();
+}
+
+template<class T>
+bool Matrix<T>::operator == (Matrix m)
+{
+	if(rows() != m.rows() || cols() != m.cols())
+		return false;
+
+	for(int i=0; i<rows(); ++i)
+	{
+		for(int j=0; j<cols(); ++j)
+		{
+			if(get(i, j) != m.get(i, j))
+				return false;
+		}
+	}
+
+	return true;
+}
+
+template<class T>
+bool Matrix<T>::operator != (Matrix m)
+{
+	if(rows() != m.rows() || cols() != m.cols())
+		return true;
+
+	for(int i=0; i<rows(); ++i)
+	{
+		for(int j=0; j<cols(); ++j)
+		{
+			if(get(i, j) != m.get(i, j))
+				return true;
+		}
+	}
+
+	return false;
 }
 
 template<class T>
