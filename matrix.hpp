@@ -41,7 +41,7 @@ public:
 
 	/* Matrix Manipulation */
 	void setToI();
-	void transpose();
+	Matrix<T> transpose();
 
 	/* Arithmetic Operations */
 	void operator = (Matrix);
@@ -184,7 +184,7 @@ void Matrix<T>::setToI()
 }
 
 template<class T>
-void Matrix<T>::transpose()
+Matrix<T> Matrix<T>::transpose()
 {
 	Matrix<T> result(cols(), rows());
 
@@ -192,10 +192,12 @@ void Matrix<T>::transpose()
 		for(int j=0; j<cols(); ++j)
 			result.set(j, i, matrix[i][j]);
 
-	remove();
-	initialise(result.rows(), result.cols());
+	return result;
 
-	copy(result);
+	// remove();
+	// initialise(result.rows(), result.cols());
+
+	// copy(result);
 }
 
 /* Arithmetic Operations */
