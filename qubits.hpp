@@ -9,13 +9,14 @@ template<class T>
 class Qubits
 {
 private:
-	Complex<T> *states;
 	unsigned int numQubits;
 	unsigned int numOfCoeffs;
 
 	QuantumGates<double> gate;
 
 public:
+	Complex<T> *states;
+
 	/* Constructor and Deconstructor */
 	Qubits(int);
 	~Qubits();
