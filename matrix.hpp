@@ -222,7 +222,7 @@ Matrix<T> Matrix<T>::transpose()
 template<class T>
 void Matrix<T>::operator = (Matrix m)
 {
-	if(rows() != m.rows() || cols() != cols())
+	if(rows() != m.rows() || cols() != m.cols())
 	{
 		remove();
 		initialise(m.rows(), m.cols());
