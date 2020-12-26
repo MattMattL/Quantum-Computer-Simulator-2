@@ -89,10 +89,9 @@ void Qubits<T>::print()
 		for(int j=0; j<numQubits; j++)
 			decToBin.insert(decToBin.begin(), (i >> j & 1) + '0');
 
-		cout << "|" << decToBin << ">";
-
-		printf("  %.3f", states[i].normSq());
-		printf("  (%5.2f +%5.2fi)\n", states[i].getRe(), states[i].getIm());
+		printf("|%s⟩", decToBin.c_str());
+		printf(" = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
+		printf("  (%.3f)\n", states->get(i, 0).normSq());	
 	}
 
 	cout << endl;
