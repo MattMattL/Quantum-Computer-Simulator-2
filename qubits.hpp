@@ -23,6 +23,7 @@ public:
 
 	/* Quantum Logic Gates */
 	void H(int);
+	void CNOT(int, int);
 
 	/* Utilities */
 	unsigned int size();
@@ -60,7 +61,16 @@ void Qubits<T>::H(int qubit)
 	for(int i=0; i<numQubits; i++)
 		m = m.tensor((i == qubit)? gate.Hadamard() : gate.Identity());
 
+	cout << "hadamard:" << endl;
+	m.print();
+
 	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::CNOT(int control, int target)
+{
+
 }
 
 /* Utilities */
