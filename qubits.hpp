@@ -15,7 +15,7 @@ private:
 	QuantumGates<T> gate;
 
 public:
-	Complex<T> *states;
+	Matrix<T> *states;
 
 	/* Constructor and Deconstructor */
 	Qubits(int);
@@ -38,14 +38,14 @@ Qubits<T>::Qubits(int qubits)
 	numQubits = qubits;
 	numOfCoeffs = 1 << numQubits;
 
-	states = new Complex<T>[numOfCoeffs];
-	states[0].set(1, 0);
+	states = new Matrix<T>(numOfCoeffs, 1);
+	states->set(0, 0, 1, 0);
 }
 
 template<class T>
 Qubits<T>::~Qubits()
 {
-	delete[] states;
+	delete states;
 }
 
 /* Quantum Logic Gates */
@@ -53,29 +53,14 @@ Qubits<T>::~Qubits()
 template<class T>
 void Qubits<T>::H(int qubit)
 {
-	if(qubit < 0 || qubit >= numQubits)
-		return;
+	Matrix<T> m(1, 1);
 
-	Matrix<T> m(2, 1);
-	int j;
+	m.setToI();
 
-	for(int i=0; i<numOfCoeffs; i++)
-	{
-		j = i + (1 << qubit);
+	for(int i=0; i<numQubits; i++)
+		m = m.tensor((i == qubit)? gate.Hadamard() : gate.Identity());
 
-		if(!(i >> qubit & 1) && j < numOfCoeffs)
-		{
-			m.set(0, 0, states[i]);
-			m.set(1, 0, states[j]);
-
-			m = gate.Hadamard() * m;
-
-			states[i] = m.get(0, 0);
-			states[j] = m.get(1, 0);
-		}
-	}
-
-	m.remove();
+	(*states) = m * (*states);
 }
 
 /* Utilities */
