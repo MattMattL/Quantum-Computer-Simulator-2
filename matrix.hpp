@@ -473,8 +473,10 @@ void Matrix<T>::print()
 
 		for(int j=0; j<cols(); ++j)
 		{
-			matrix[i][j].print();
-			cout << "\t";
+			if(matrix[i][j].getIm() >= 0)
+				printf("%6.3f +%6.3fi  ", matrix[i][j].getRe(), matrix[i][j].getIm());
+			else
+				printf("%6.3f %6.3fi  ", matrix[i][j].getRe(), matrix[i][j].getIm());
 		}
 
 		cout << endl;
