@@ -1,6 +1,7 @@
 #ifndef QUMULATOR_QUAMTUM_GATES_HPP
 #define QUMULATOR_QUAMTUM_GATES_HPP
 
+#include <cmath>
 #include "complex.hpp"
 #include "matrix.hpp"
 
@@ -19,6 +20,8 @@ public:
 
 	Matrix<T> Hadamard() { return *hadamard; }
 	Matrix<T> CNOT() { return *cnot; }
+
+	Matrix<T> Hadamard(int);
 
 };
 
@@ -57,6 +60,17 @@ void QuantumGates<T>::initialise()
 	cnot->set(1, 1, c1);
 	cnot->set(2, 3, c1);
 	cnot->set(3, 2, c1);
+}
+
+template<class T>
+Matrix<T> QuantumGates<T>::Hadamard(int dimension)
+{
+	Complex<T> cSqrt2(sqrt(2), 0);
+
+	if(dimension > 2)
+		return Hadamard(dimension / 2).tensor(Hadamard()) / cSqrt2;
+	else
+		return Hadamard();
 }
 
 #endif
