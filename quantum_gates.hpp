@@ -17,7 +17,7 @@ public:
 	QuantumGates();
 	~QuantumGates();
 
-	Matrix<T> H() { return *hadamard; }
+	Matrix<T> Hadamard() { return *hadamard; }
 	Matrix<T> CNOT() { return *cnot; }
 
 };
