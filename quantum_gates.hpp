@@ -11,6 +11,7 @@ class QuantumGates
 private:
 	void initialise();
 
+	Matrix<T> *identity;
 	Matrix<T> *hadamard;
 	Matrix<T> *cnot;
 
@@ -18,10 +19,13 @@ public:
 	QuantumGates();
 	~QuantumGates();
 
-	Matrix<T> Hadamard() { return *hadamard; }
-	Matrix<T> CNOT() { return *cnot; }
+	Matrix<T> Identity() { return *identity; }
+	Matrix<T> Identity(int);
 
+	Matrix<T> Hadamard() { return *hadamard; }
 	Matrix<T> Hadamard(int);
+
+	Matrix<T> CNOT() { return *cnot; }
 
 };
 
@@ -44,6 +48,10 @@ void QuantumGates<T>::initialise()
 	Complex<T> c0(0, 0), c1(1, 0), cn1(-1, 0), ci(0, 1), cni(0, -1);
 	Complex<T> cSqrt2(sqrt(2), 0);
 
+	// Identity
+	identity = new Matrix<T>(2, 2);
+	identity->setToI();
+
 	// Hadamard
 	hadamard = new Matrix<T>(2, 2);
 
@@ -60,6 +68,15 @@ void QuantumGates<T>::initialise()
 	cnot->set(1, 1, c1);
 	cnot->set(2, 3, c1);
 	cnot->set(3, 2, c1);
+}
+
+template<class T>
+Matrix<T> QuantumGates<T>::Identity(int dimension)
+{
+	Matrix<T> m(dimension, dimension);
+	m.setToI();
+
+	return m;
 }
 
 template<class T>
