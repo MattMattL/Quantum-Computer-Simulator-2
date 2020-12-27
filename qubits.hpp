@@ -105,7 +105,27 @@ void Qubits<T>::Z(int qubit)
 template<class T>
 void Qubits<T>::CNOT(int control, int target)
 {
+	Matrix<T> m1(1, 1), m2(1, 1), m00(2, 2), m11(2, 2);
 
+	m1.setToI();
+	m2.setToI();
+	m00.set(0, 0, 1, 0);
+	m11.set(1, 1, 1, 0);
+
+	for(int i=0; i<numQubits; i++)
+		m1 = m1.tensor((i == control)? m00 : gate.Identity());
+
+	for(int i=0; i<numQubits; i++)
+	{
+		if(i == control)
+			m2 = m2.tensor(m11);
+		else if(i == target)
+			m2 = m2.tensor(gate.Pauli_X());
+		else
+			m2 = m2.tensor(gate.Identity());
+	}
+
+	(*states) = (m1 + m2) * (*states);
 }
 
 /* Utilities */
@@ -136,7 +156,7 @@ void Qubits<T>::print()
 
 		printf("|%s⟩", decToBin.c_str());
 		printf(" = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
-		printf("  (%.3f)\n", states->get(i, 0).normSq());	
+		printf("  (%4.1f%%)\n", states->get(i, 0).normSq() * 100);	
 	}
 
 	cout << endl;
