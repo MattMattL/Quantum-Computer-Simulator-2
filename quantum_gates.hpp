@@ -48,6 +48,9 @@ QuantumGates<T>::~QuantumGates()
 {
 	delete hadamard;
 	delete cnot;
+	delete pauli_x;
+	delete pauli_y;
+	delete pauli_z;
 }
 
 template<class T>

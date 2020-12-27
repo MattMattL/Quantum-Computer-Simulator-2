@@ -23,6 +23,9 @@ public:
 
 	/* Quantum Logic Gates */
 	void H(int);
+	void X(int);
+	void Y(int);
+	void Z(int);
 	void CNOT(int, int);
 
 	/* Utilities */
@@ -55,14 +58,46 @@ template<class T>
 void Qubits<T>::H(int qubit)
 {
 	Matrix<T> m(1, 1);
-
 	m.setToI();
 
 	for(int i=0; i<numQubits; i++)
 		m = m.tensor((i == qubit)? gate.Hadamard() : gate.Identity());
 
-	cout << "hadamard:" << endl;
-	m.print();
+	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::X(int qubit)
+{
+	Matrix<T> m(1, 1);
+	m.setToI();
+
+	for(int i=0; i<numQubits; i++)
+		m = m.tensor((i == qubit)? gate.Pauli_X() : gate.Identity());
+
+	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::Y(int qubit)
+{
+	Matrix<T> m(1, 1);
+	m.setToI();
+
+	for(int i=0; i<numQubits; i++)
+		m = m.tensor((i == qubit)? gate.Pauli_Y() : gate.Identity());
+
+	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::Z(int qubit)
+{
+	Matrix<T> m(1, 1);
+	m.setToI();
+
+	for(int i=0; i<numQubits; i++)
+		m = m.tensor((i == qubit)? gate.Pauli_Z() : gate.Identity());
 
 	(*states) = m * (*states);
 }
