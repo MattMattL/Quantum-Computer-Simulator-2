@@ -1,18 +1,18 @@
 #ifndef QUMULATOR_MATRIX_HPP
 #define QUMULATOR_MATRIX_HPP
 
+#include <vector>
 #include "complex.hpp"
 
 template<class T>
 class Matrix
 {
 private:
-	Complex<T> **matrix;
-	int ROWS, COLS;
+	vector<vector<Complex<T> > > matrix;
 
 	bool isInBoundary(int row, int col)
 	{
-		return (0 <= row && row < ROWS) && (0 <= col && col < COLS);
+		return (0 <= row && row < rows()) && (0 <= col && col < cols());
 	}
 
 	void barf(string function, string message)
@@ -27,7 +27,6 @@ public:
 	Matrix(int, int);
 	~Matrix();
 	void initialise(int, int);
-	void remove();
 
 	/* Setters and Getters */
 	void setRe(int, int, T);
@@ -66,13 +65,13 @@ public:
 
 	Matrix<T> tensor(Matrix<T>);
 
-	/* Utilities */
+	// /* Utilities */
 	int rows();
 	int cols();
 	void copy(Matrix);
-	Complex<T>** ptr();
+	Complex<T>* ptr();
 
-	/* Debugging */
+	// /* Debugging */
 	void printRe();
 	void print();
 
@@ -95,22 +94,16 @@ Matrix<T>::~Matrix()
 template<class T>
 void Matrix<T>::initialise(int rows, int cols)
 {
-	ROWS = rows;
-	COLS = cols;
+	matrix.clear();
 
-	matrix = new Complex<T>*[ROWS];
+	vector<Complex<T> > singleColumn;
+	Complex<T> c(0, 0);
 
-	for(int i=0; i<ROWS; ++i)
-		matrix[i] = new Complex<T>[COLS];
-}
+	for(int j=0; j<cols; j++)
+		singleColumn.push_back(c);
 
-template<class T>
-void Matrix<T>::remove()
-{
-	for(int i=0; i<ROWS; ++i)
-		delete[] matrix[i];
-
-	delete[] matrix;
+	for(int i=0; i<rows; i++)
+		matrix.push_back(singleColumn);
 }
 
 /* Setters and Getters */
@@ -121,7 +114,7 @@ void Matrix<T>::setRe(int row, int col, T value)
 	if(!isInBoundary(row, col))
 		barf("setRe", "entry out of boundary");
 
-	matrix[row][col].setRe(value);
+	matrix.at(row).at(col).setRe(value);
 }
 
 template<class T>
@@ -130,7 +123,7 @@ void Matrix<T>::setIm(int row, int col, T value)
 	if(!isInBoundary(row, col))
 		barf("setIm", "entry out of boundary");
 
-	matrix[row][col].setIm(value);
+	matrix.at(row).at(col).setIm(value);
 }
 
 template<class T>
@@ -139,7 +132,7 @@ void Matrix<T>::set(int row, int col, T re, T im)
 	if(!isInBoundary(row, col))
 		barf("set(T, T)", "entry out of boundary");
 
-	matrix[row][col].set(re, im);
+	matrix.at(row).at(col).set(re, im);
 }
 
 template<class T>
@@ -148,7 +141,7 @@ void Matrix<T>::set(int row, int col, Complex<T> c)
 	if(!isInBoundary(row, col))
 		barf("set(Complex<T>)", "entry out of boundary");
 
-	matrix[row][col] = c;
+	matrix.at(row).at(col) = c;
 }
 
 template<class T>
@@ -156,7 +149,7 @@ void Matrix<T>::setAllRe(T value)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j].setRe(value);
+			matrix.at(i).at(j).setRe(value);
 }
 
 template<class T>
@@ -164,7 +157,7 @@ void Matrix<T>::setAllIm(T value)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j].setIm(value);
+			matrix.at(i).at(j).setIm(value);
 }
 
 template<class T>
@@ -172,7 +165,7 @@ void Matrix<T>::setAll(T re, T im)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j].set(re, im);
+			matrix.at(i).at(j).set(re, im);
 }
 
 template<class T>
@@ -180,7 +173,7 @@ void Matrix<T>::setAll(Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j].set(c.getRe(), c.getIm());
+			matrix.at(i).at(j).set(c.getRe(), c.getIm());
 }
 
 template<class T>
@@ -189,7 +182,7 @@ Complex<T> Matrix<T>::get(int row, int col)
 	if(!isInBoundary(row, col))
 		barf("get", "entry out of boundary");
 
-	return matrix[row][col];
+	return matrix.at(row).at(col);
 }
 
 /* Matrix Manipulation */
@@ -212,7 +205,7 @@ Matrix<T> Matrix<T>::transpose()
 
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			result.set(j, i, matrix[i][j]);
+			result.set(j, i, matrix.at(i).at(j));
 
 	return result;
 }
@@ -223,13 +216,9 @@ template<class T>
 void Matrix<T>::operator = (Matrix m)
 {
 	if(rows() != m.rows() || cols() != m.cols())
-	{
-		remove();
 		initialise(m.rows(), m.cols());
-	}
 
 	copy(m);
-	m.remove();
 }
 
 template<class T>
@@ -298,7 +287,7 @@ void Matrix<T>::operator += (Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] += m.get(i, j);
+			matrix.at(i).at(j) += m.get(i, j);
 }
 
 template<class T>
@@ -306,7 +295,7 @@ void Matrix<T>::operator -= (Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] -= m.get(i, j);
+			matrix.at(i).at(j) -= m.get(i, j);
 }
 
 
@@ -317,7 +306,7 @@ Matrix<T> Matrix<T>::operator * (Complex<T> c)
 
 	for(int i=0; i<result.rows(); ++i)
 		for(int j=0; j<result.cols(); ++j)
-			result.set(i, j, matrix[i][j] * c);
+			result.set(i, j, matrix.at(i).at(j) * c);
 
 	return result;
 }
@@ -351,7 +340,7 @@ void Matrix<T>::operator *= (Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] *= c;
+			matrix.at(i).at(j) *= c;
 }
 
 template<class T>
@@ -376,7 +365,6 @@ void Matrix<T>::operator *= (Matrix m)
 	}
 
 	copy(result);
-	result.remove();
 }
 
 
@@ -387,7 +375,7 @@ Matrix<T> Matrix<T>::operator / (Complex<T> c)
 
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			result.set(i, j, matrix[i][j] / c);
+			result.set(i, j, matrix.at(i).at(j) / c);
 
 	return result;
 }
@@ -397,7 +385,7 @@ void Matrix<T>::operator /= (Complex<T> c)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] /= c;
+			matrix.at(i).at(j) /= c;
 }
 
 template<class T>
@@ -423,13 +411,13 @@ Matrix<T> Matrix<T>::tensor(Matrix<T> m)
 template<class T>
 int Matrix<T>::rows()
 {
-	return ROWS;
+	return matrix.size();
 }
 
 template<class T>
 int Matrix<T>::cols()
 {
-	return COLS;
+	return (matrix.size() > 0)? matrix.at(0).size() : 0;
 }
 
 template<class T>
@@ -437,16 +425,16 @@ void Matrix<T>::copy(Matrix m)
 {
 	for(int i=0; i<rows(); ++i)
 		for(int j=0; j<cols(); ++j)
-			matrix[i][j] = m.get(i, j);
+			matrix.at(i).at(j) = m.get(i, j);
 }
 
 template<class T>
-Complex<T>** Matrix<T>::ptr()
+Complex<T>* Matrix<T>::ptr()
 {
-	return matrix;
+	return &matrix.at(0).at(0);
 }
 
-/* Debugging */
+// /* Debugging */
 
 template<class T>
 void Matrix<T>::printRe()
@@ -473,10 +461,10 @@ void Matrix<T>::print()
 
 		for(int j=0; j<cols(); ++j)
 		{
-			if(matrix[i][j].getIm() >= 0)
-				printf("%6.3f +%6.3fi  ", matrix[i][j].getRe(), matrix[i][j].getIm());
+			if(matrix.at(i).at(j).getIm() >= 0)
+				printf("%6.3f +%6.3fi  ", matrix.at(i).at(j).getRe(), matrix.at(i).at(j).getIm());
 			else
-				printf("%6.3f %6.3fi  ", matrix[i][j].getRe(), matrix[i][j].getIm());
+				printf("%6.3f %6.3fi  ", matrix.at(i).at(j).getRe(), matrix.at(i).at(j).getIm());
 		}
 
 		cout << endl;
