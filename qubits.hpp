@@ -156,7 +156,7 @@ void Qubits<T>::print()
 
 		printf("|%s⟩", decToBin.c_str());
 		printf(" = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
-		printf("  (%4.1f%%)\n", states->get(i, 0).normSq() * 100);	
+		printf("  (%.3f)\n", states->get(i, 0).normSq());	
 	}
 
 	cout << endl;
