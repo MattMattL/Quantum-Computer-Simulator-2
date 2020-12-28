@@ -20,9 +20,6 @@ private:
 
 	int lines;
 
-	void link(string*, int, int, char);
-	void fill(string*, int, int, char);
-
 public:
 	enum gateType: int
 	{
@@ -47,6 +44,13 @@ public:
 	void print();
 
 private:
+	void link(string*, int, int, char);
+	void fill(string*, int, int, char);
+
+	bool isMultiQubitGate(gateType gate)
+	{
+		return (gate >> 8) > 1;
+	}
 
 };
 
@@ -121,7 +125,6 @@ void QumulatorGraphics::draw()
 	add(0, LINE);
 
 	string emptyLines, currLine;
-	bool isNewline, gateOverlaps, isMultiQubitGate;
 
 	for(int j=0; j<lines; j++)
 		emptyLines += "- ";
@@ -132,20 +135,9 @@ void QumulatorGraphics::draw()
 	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
 		vector<int> currPos = logger.pos.at(i);
+		vector<int> nextPos = logger.pos.at(i + 1);
 		gateType currGate = logger.gate.at(i);
-		gateType nextGate = logger.gate.at(i);
-		
-		gateOverlaps = currLine[2 * currPos.at(0)] != '-';
-		isMultiQubitGate = (currGate >> 8) > 1;
-		isNewline = currGate == LINE;
-
-		if(isMultiQubitGate || gateOverlaps)
-		{
-			map.push_back(currLine);
-			map.push_back(emptyLines);
-
-			currLine = emptyLines;
-		}
+		gateType nextGate = logger.gate.at(i + 1);
 
 		switch(currGate)
 		{
@@ -170,7 +162,9 @@ void QumulatorGraphics::draw()
 				break;
 		}
 
-		if(isMultiQubitGate)
+		bool gateOverlaps = currLine[2 * nextPos.at(0)] != '-';
+
+		if(isMultiQubitGate(currGate) || isMultiQubitGate(nextGate) || gateOverlaps || nextGate == LINE)
 		{
 			map.push_back(currLine);
 			map.push_back(emptyLines);
