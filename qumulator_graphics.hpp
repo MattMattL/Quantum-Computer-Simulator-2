@@ -20,23 +20,13 @@ private:
 
 	int lines;
 
-	void addLine()
-	{
-		string str = "";
-
-		for(int j=0; j<lines; j++)
-			str += "- ";
-
-		map.push_back(str);
-	}
-
 	void link(string*, int, int, char);
 	void fill(string*, int, int, char);
 
 public:
 	enum gateType: int
 	{
-		LINE = (1 << 8) + 0,
+		LINE = (0 << 8) + 0,
 
 		HADAMARD = (1 << 8) + 10, // required_qubits << 8 + serial
 		PAULI_X = (1 << 8) + 11,
@@ -55,6 +45,9 @@ public:
 	void margin();
 	void draw();
 	void print();
+
+private:
+
 };
 
 QumulatorGraphics::QumulatorGraphics(int qubits)
@@ -120,80 +113,75 @@ void QumulatorGraphics::fill(string *str, int start, int end, char ch)
 
 void QumulatorGraphics::margin()
 {
-	vector<int> dummy;
-	dummy.push_back(0);
-
 	add(0, LINE);
 }
 
 void QumulatorGraphics::draw()
 {
-	string str, strInitial;
+	add(0, LINE);
+
+	string emptyLines, currLine;
+	bool isNewline, gateOverlaps, isMultiQubitGate;
 
 	for(int j=0; j<lines; j++)
-		strInitial += "- ";
+		emptyLines += "- ";
 
-	str = strInitial;
+	currLine = emptyLines;
+	map.push_back(currLine);
 
-	addLine();
-
-	for(int i=0; i<logger.gate.size(); i++)
+	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
-		int qubitsUsed = logger.gate.at(i) >> 8;
-		int qubitSerial = 2 * logger.pos.at(i).at(0);
+		vector<int> currPos = logger.pos.at(i);
+		gateType currGate = logger.gate.at(i);
+		gateType nextGate = logger.gate.at(i);
+		
+		gateOverlaps = currLine[2 * currPos.at(0)] != '-';
+		isMultiQubitGate = (currGate >> 8) > 1;
+		isNewline = currGate == LINE;
 
-		if(qubitsUsed > 1 || str[qubitSerial] != '-')
+		if(isMultiQubitGate || gateOverlaps)
 		{
-			// append previous result
-			map.push_back(str);
+			map.push_back(currLine);
+			map.push_back(emptyLines);
 
-			// shift line for multi-qubit gates
-			str = strInitial;
-			map.push_back(str);
+			currLine = emptyLines;
 		}
 
-		vector<int> position = logger.pos.at(i);
-
-		switch(logger.gate.at(i))
+		switch(currGate)
 		{
-			case LINE:
-				addLine();
-				break;
 			case HADAMARD:
-				str[2 * position.at(0)] = 'H';
-				break;
-			case CNOT:
-				str[2 * position.at(0)] = '*';
-				str[2 * position.at(1)] = '@';
-				link(&str, 2 * position.at(0),2 * position.at(1), '|');
+				currLine[2 * currPos.at(0)] = 'H';
 				break;
 			case PAULI_X:
+				currLine[2 * currPos.at(0)] = 'X';
 				break;
 			case PAULI_Y:
+				currLine[2 * currPos.at(0)] = 'Y';
 				break;
 			case PAULI_Z:
+				currLine[2 * currPos.at(0)] = 'Z';
+				break;
+			case CNOT:
+				currLine[2 * currPos.at(0)] = '*';
+				currLine[2 * currPos.at(1)] = '@';
+				link(&currLine, 2 * currPos.at(0), 2 * currPos.at(1), '|');
 				break;
 			default:
 				break;
 		}
 
-		if(qubitsUsed > 1)
+		if(isMultiQubitGate)
 		{
-			// append previous result
-			map.push_back(str);
+			map.push_back(currLine);
+			map.push_back(emptyLines);
 
-			// shift line for multi-qubit gates
-			str = strInitial;
-			map.push_back(str);
+			currLine = emptyLines;
 		}
 	}
 
-	// append the last result
-	map.push_back(str);
-
-	// append dummy lines
-	addLine();
-	addLine();
+	map.push_back(currLine);
+	map.push_back(emptyLines);
+	map.push_back(emptyLines);
 }
 
 void QumulatorGraphics::print()
