@@ -117,7 +117,7 @@ void QumulatorGraphics::fill(string *str, int start, int end, char ch)
 
 void QumulatorGraphics::margin()
 {
-	add(0, LINE);
+	// add(0, LINE);
 }
 
 void QumulatorGraphics::draw()
@@ -164,7 +164,7 @@ void QumulatorGraphics::draw()
 
 		bool gateOverlaps = currLine[2 * nextPos.at(0)] != '-';
 
-		if(isMultiQubitGate(currGate) || isMultiQubitGate(nextGate) || gateOverlaps || nextGate == LINE)
+		if(isMultiQubitGate(currGate) || isMultiQubitGate(nextGate) || gateOverlaps)
 		{
 			map.push_back(currLine);
 			map.push_back(emptyLines);
