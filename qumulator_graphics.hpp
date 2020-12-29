@@ -18,7 +18,7 @@ private:
 
 	vector<string> map;
 
-	int lines;
+	int numOfLines;
 
 public:
 	enum gateType: int
@@ -56,7 +56,7 @@ private:
 
 QumulatorGraphics::QumulatorGraphics(int qubits)
 {
-	lines = qubits;
+	numOfLines = qubits;
 }
 
 QumulatorGraphics::~QumulatorGraphics()
@@ -126,7 +126,7 @@ void QumulatorGraphics::draw()
 
 	string emptyLines, currLine;
 
-	for(int j=0; j<lines; j++)
+	for(int j=0; j<numOfLines; j++)
 		emptyLines += "- ";
 
 	currLine = emptyLines;
@@ -180,7 +180,7 @@ void QumulatorGraphics::draw()
 
 void QumulatorGraphics::print()
 {
-	for(int j=0; j<2 * lines; j++)
+	for(int j=0; j<2 * numOfLines; j++)
 	{
 		for(int i=0; i<map.size(); i++)
 			cout << map.at(i).at(j);
