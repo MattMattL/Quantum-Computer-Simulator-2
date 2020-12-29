@@ -140,7 +140,7 @@ unsigned int Qubits<T>::size()
 template<class T>
 unsigned int Qubits<T>::length()
 {
-	// Returns the number of coefficients representing the qubits.
+	// Returns the number of coefficients representing the states.
 	return numOfCoeffs;
 }
 
