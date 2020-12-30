@@ -255,6 +255,7 @@ void QumulatorGraphics::draw()
 		{
 			map.push_back(currLine);
 			map.push_back(emptyLines);
+			map.push_back(emptyLines);
 
 			currLine = emptyLines;
 		}
