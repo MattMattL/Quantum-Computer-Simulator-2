@@ -4,6 +4,7 @@
 #include "complex.hpp"
 #include "matrix.hpp"
 #include "quantum_gates.hpp"
+#include "qumulator_graphics.hpp"
 
 template<class T>
 class Qubits
@@ -32,6 +33,10 @@ public:
 	unsigned int size();
 	unsigned int length();
 	void print();
+
+	/* Circuit Diagram */
+	QumulatorGraphics graphics;
+	bool enableGraphics;
 };
 
 /* Constructor and Deconstructor */
@@ -42,8 +47,12 @@ Qubits<T>::Qubits(int qubits)
 	numQubits = qubits;
 	numOfCoeffs = 1 << numQubits;
 
+	graphics.setSize(numQubits);
+
 	states = new Matrix<T>(numOfCoeffs, 1);
 	states->set(0, 0, 1, 0);
+
+	enableGraphics = true;
 }
 
 template<class T>
@@ -57,6 +66,9 @@ Qubits<T>::~Qubits()
 template<class T>
 void Qubits<T>::H(int qubit)
 {
+	if(enableGraphics)
+		graphics.add(qubit, 'H', graphics.MARK);
+
 	Matrix<T> m(1, 1);
 	m.setToI();
 
@@ -69,6 +81,9 @@ void Qubits<T>::H(int qubit)
 template<class T>
 void Qubits<T>::X(int qubit)
 {
+	if(enableGraphics)
+		graphics.add(qubit, 'X', graphics.MARK);
+
 	Matrix<T> m(1, 1);
 	m.setToI();
 
@@ -81,6 +96,9 @@ void Qubits<T>::X(int qubit)
 template<class T>
 void Qubits<T>::Y(int qubit)
 {
+	if(enableGraphics)
+		graphics.add(qubit, 'Y', graphics.MARK);
+
 	Matrix<T> m(1, 1);
 	m.setToI();
 
@@ -93,6 +111,9 @@ void Qubits<T>::Y(int qubit)
 template<class T>
 void Qubits<T>::Z(int qubit)
 {
+	if(enableGraphics)
+		graphics.add(qubit, 'Z', graphics.MARK);
+
 	Matrix<T> m(1, 1);
 	m.setToI();
 
@@ -105,6 +126,9 @@ void Qubits<T>::Z(int qubit)
 template<class T>
 void Qubits<T>::CNOT(int control, int target)
 {
+	if(enableGraphics)
+		graphics.add(control, target, '*', '@', '|', graphics.MARK_AND_FILL);
+
 	Matrix<T> m1(1, 1), m2(1, 1), m00(2, 2), m11(2, 2);
 
 	m1.setToI();
