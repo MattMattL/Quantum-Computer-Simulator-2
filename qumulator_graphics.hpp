@@ -1,6 +1,7 @@
 #ifndef QUMULATOR_GRAPHICS_HPP
 #define QUMULATOR_GRAPHICS_HPP
 
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -78,6 +79,7 @@ public:
 	void margin();
 	void draw();
 	void print();
+	void save(string);
 
 private:
 	void link(string*, int, int, char);
@@ -276,6 +278,22 @@ void QumulatorGraphics::print()
 
 		cout << endl;
 	}
+}
+
+void QumulatorGraphics::save(string location)
+{
+	ofstream file;
+	file.open(location, ofstream::trunc);
+
+	for(int j=0; j<2 * numOfLines; j++)
+	{
+		for(int i=0; i<map.size(); i++)
+			file << map.at(i).at(j);
+
+		file << endl;
+	}
+	
+	file.close();
 }
 
 #endif
