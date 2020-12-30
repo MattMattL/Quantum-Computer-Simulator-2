@@ -253,8 +253,12 @@ void QumulatorGraphics::draw()
 
 		bool gateOverlaps = currLine[nextPos.at(0)] != '-';
 
+
 		if(currPos.size() > 1 || nextPos.size() > 1 || gateOverlaps)
 		{
+			if(i >= logger.gate.size() - 2)
+				break;
+
 			map.push_back(currLine);
 			map.push_back(emptyLines);
 			map.push_back(emptyLines);
