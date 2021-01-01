@@ -275,7 +275,7 @@ void QumulatorGraphics::draw()
 
 void QumulatorGraphics::print()
 {
-	for(int j=0; j<2 * numOfLines; j++)
+	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
 		for(int i=0; i<map.size(); i++)
 			cout << map.at(i).at(j);
@@ -289,7 +289,7 @@ void QumulatorGraphics::save(string location)
 	ofstream file;
 	file.open(location, ofstream::trunc);
 
-	for(int j=0; j<2 * numOfLines; j++)
+	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
 		for(int i=0; i<map.size(); i++)
 			file << map.at(i).at(j);
