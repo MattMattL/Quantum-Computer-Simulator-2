@@ -13,10 +13,11 @@ private:
 
 	Matrix<T> *identity;
 	Matrix<T> *hadamard;
-	Matrix<T> *cnot;
 	Matrix<T> *pauli_x;
 	Matrix<T> *pauli_y;
 	Matrix<T> *pauli_z;
+	Matrix<T> *phase;
+	Matrix<T> *cnot;
 
 public:
 	QuantumGates();
@@ -32,6 +33,8 @@ public:
 	Matrix<T> Pauli_X() { return *pauli_x; }
 	Matrix<T> Pauli_Y() { return *pauli_y; }
 	Matrix<T> Pauli_Z() { return *pauli_z; }
+
+	Matrix<T> Phase() { return *phase; }
 
 	/* Multi-Qubit Operations */
 	Matrix<T> CNOT() { return *cnot; }
@@ -90,6 +93,11 @@ void QuantumGates<T>::initialise()
 	pauli_z = new Matrix<T>(2, 2);
 	pauli_z->set(0, 0, c1);
 	pauli_z->set(1, 1, cn1);
+
+	// Phase
+	phase = new Matrix<T>(2, 2);
+	phase->set(0, 0, c1);
+	phase->set(1, 1, ci);
 }
 
 template<class T>
