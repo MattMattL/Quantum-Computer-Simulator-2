@@ -27,7 +27,13 @@ public:
 	void X(int);
 	void Y(int);
 	void Z(int);
+
+	Matrix<T> controlledU(int, int, Matrix<T>);
 	void CNOT(int, int);
+	void CY(int, int);
+	void CZ(int, int);
+
+	void Swap(int, int);
 
 	/* Utilities */
 	unsigned int size();
@@ -124,11 +130,8 @@ void Qubits<T>::Z(int qubit)
 }
 
 template<class T>
-void Qubits<T>::CNOT(int control, int target)
+Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
 {
-	if(enableGraphics)
-		graphics.add(control, target, '*', '@', '|', graphics.MARK_AND_FILL);
-
 	Matrix<T> m1(1, 1), m2(1, 1), m00(2, 2), m11(2, 2);
 
 	m1.setToI();
@@ -144,12 +147,51 @@ void Qubits<T>::CNOT(int control, int target)
 		if(i == control)
 			m2 = m2.tensor(m11);
 		else if(i == target)
-			m2 = m2.tensor(gate.Pauli_X());
+			m2 = m2.tensor(u);
 		else
 			m2 = m2.tensor(gate.Identity());
 	}
 
-	(*states) = (m1 + m2) * (*states);
+	 return m1 + m2;
+}
+
+template<class T>
+void Qubits<T>::CNOT(int control, int target)
+{
+	if(enableGraphics)
+		graphics.add(control, target, '*', '@', '|', graphics.MARK_AND_FILL);
+
+	(*states) = controlledU(control, target, gate.Pauli_X()) * (*states);
+}
+
+template<class T>
+void Qubits<T>::CY(int control, int target)
+{
+	if(enableGraphics)
+		graphics.add(control, target, '*', 'Y', '|', graphics.MARK_AND_FILL);
+
+	(*states) = controlledU(control, target, gate.Pauli_Y()) * (*states);
+}
+
+template<class T>
+void Qubits<T>::CZ(int control, int target)
+{
+	if(enableGraphics)
+		graphics.add(control, target, '*', 'Z', '|', graphics.MARK_AND_FILL);
+
+	(*states) = controlledU(control, target, gate.Pauli_Z()) * (*states);
+}
+
+template<class T>
+void Qubits<T>::Swap(int q1, int q2)
+{
+	if(enableGraphics)
+		graphics.add(q1, q2, 'X', 'X', '|', graphics.MARK_AND_FILL);
+
+	(*states) = controlledU(q1, q2, gate.Pauli_X()) *
+				controlledU(q2, q1, gate.Pauli_X()) *
+				controlledU(q1, q2, gate.Pauli_X()) *
+				(*states);
 }
 
 /* Utilities */
