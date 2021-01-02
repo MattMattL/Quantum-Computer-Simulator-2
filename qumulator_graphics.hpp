@@ -30,15 +30,13 @@ private:
 		*num2 = temp;
 	}
 
-	int max(int num1, int num2)
-	{
-		return (num1 > num2)? num1 : num2;
-	}
+	int max(int num1, int num2) { return (num1 > num2)? num1 : num2; }
 
-	int min(int num1, int num2)
-	{
-		return (num1 < num2)? num1 : num2;
-	}
+	int min(int num1, int num2) { return (num1 < num2)? num1 : num2; }
+
+	void draw();
+	void link(string*, int, int, char);
+	void fill(string*, int, int, char);
 
 public:
 	enum gateType: int
@@ -77,13 +75,8 @@ public:
 	void add(vector<int>, vector<char>, markType);
 
 	void margin();
-	void draw();
 	void print();
 	void save(string);
-
-private:
-	void link(string*, int, int, char);
-	void fill(string*, int, int, char);
 };
 
 QumulatorGraphics::QumulatorGraphics()
@@ -203,6 +196,7 @@ void QumulatorGraphics::draw()
 	map.push_back(emptyLines);
 	map.push_back(emptyLines);
 
+	// add one virtical line each time
 	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
 		vector<int> currPos = logger.pos.at(i);
