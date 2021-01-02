@@ -78,7 +78,7 @@ void Qubits<T>::H(int qubit)
 	Matrix<T> m(1, 1);
 	m.setToI();
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 		m = m.tensor((i == qubit)? gate.Hadamard() : gate.Identity());
 
 	(*states) = m * (*states);
@@ -93,7 +93,7 @@ void Qubits<T>::X(int qubit)
 	Matrix<T> m(1, 1);
 	m.setToI();
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 		m = m.tensor((i == qubit)? gate.Pauli_X() : gate.Identity());
 
 	(*states) = m * (*states);
@@ -108,7 +108,7 @@ void Qubits<T>::Y(int qubit)
 	Matrix<T> m(1, 1);
 	m.setToI();
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 		m = m.tensor((i == qubit)? gate.Pauli_Y() : gate.Identity());
 
 	(*states) = m * (*states);
@@ -123,7 +123,7 @@ void Qubits<T>::Z(int qubit)
 	Matrix<T> m(1, 1);
 	m.setToI();
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 		m = m.tensor((i == qubit)? gate.Pauli_Z() : gate.Identity());
 
 	(*states) = m * (*states);
@@ -139,10 +139,10 @@ Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
 	m00.set(0, 0, 1, 0);
 	m11.set(1, 1, 1, 0);
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 		m1 = m1.tensor((i == control)? m00 : gate.Identity());
 
-	for(int i=0; i<numQubits; i++)
+	for(int i=numQubits - 1; i>=0; --i)
 	{
 		if(i == control)
 			m2 = m2.tensor(m11);
