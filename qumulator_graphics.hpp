@@ -275,6 +275,8 @@ void QumulatorGraphics::draw()
 
 void QumulatorGraphics::print()
 {
+	draw();
+
 	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
 		for(int i=0; i<map.size(); i++)
@@ -288,6 +290,8 @@ void QumulatorGraphics::save(string location)
 {
 	ofstream file;
 	file.open(location, ofstream::trunc);
+
+	draw();
 
 	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
