@@ -184,9 +184,19 @@ void QumulatorGraphics::margin()
 
 void QumulatorGraphics::draw()
 {
+	map.clear();
+
 	add(0, ' ', MARK); // dummy element
 
 	string emptyLines, currLine;
+
+	for(int j=0; j<numOfLines; j++)
+	{
+		currLine += (j + '0');
+		currLine += " ";
+	}
+
+	map.push_back(currLine);
 
 	for(int j=0; j<numOfLines; j++)
 		emptyLines += "- ";
@@ -282,10 +292,10 @@ void QumulatorGraphics::print()
 
 void QumulatorGraphics::save(string location)
 {
+	draw();
+
 	ofstream file;
 	file.open(location, ofstream::trunc);
-
-	draw();
 
 	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
