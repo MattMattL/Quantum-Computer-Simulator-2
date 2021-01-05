@@ -42,7 +42,6 @@ public:
 	enum gateType: int
 	{
 		LINE = (0 << 8) + 0,
-
 		HADAMARD = (1 << 8) + 10, // required_qubits << 8 + serial
 		PAULI_X = (1 << 8) + 11,
 		PAULI_Y = (1 << 8) + 12,
@@ -55,7 +54,6 @@ public:
 		MARK = 10,
 		MARK_AND_FILL = 11,
 		MARK_AND_LINK = 12,
-
 		FILL_BETWEEN = 20,
 		LINK_BETWEEN = 21,
 		FILL_ALL = 30,
@@ -74,7 +72,9 @@ public:
 	void add(int, int, char, char, char, markType);
 	void add(vector<int>, vector<char>, markType);
 
+	// Deprecated
 	void margin();
+
 	void print();
 	void save(string);
 };
@@ -177,6 +177,7 @@ void QumulatorGraphics::fill(string *str, int start, int end, char ch)
 		(*str)[i] = ch;
 }
 
+// Deprecated
 void QumulatorGraphics::margin()
 {
 	// add(0, LINE);
@@ -257,7 +258,6 @@ void QumulatorGraphics::draw()
 
 		bool gateOverlaps = currLine[nextPos.at(0)] != '-';
 
-
 		if(currPos.size() > 1 || nextPos.size() > 1 || gateOverlaps)
 		{
 			if(i >= logger.gate.size() - 2)
@@ -272,7 +272,6 @@ void QumulatorGraphics::draw()
 	}
 
 	map.push_back(currLine);
-
 	map.push_back(emptyLines);
 	map.push_back(emptyLines);
 }
