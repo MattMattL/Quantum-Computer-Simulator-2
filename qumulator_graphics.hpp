@@ -31,10 +31,8 @@ private:
 	}
 
 	int max(int num1, int num2) { return (num1 > num2)? num1 : num2; }
-
 	int min(int num1, int num2) { return (num1 < num2)? num1 : num2; }
 
-	void draw();
 	void link(string*, int, int, char);
 	void fill(string*, int, int, char);
 
@@ -75,6 +73,7 @@ public:
 	// Deprecated
 	void margin();
 
+	void draw();
 	void print();
 	void save(string);
 };
@@ -278,8 +277,6 @@ void QumulatorGraphics::draw()
 
 void QumulatorGraphics::print()
 {
-	draw();
-
 	for(int j=0; j<2 * numOfLines - 1; j++)
 	{
 		for(int i=0; i<map.size(); i++)
@@ -291,8 +288,6 @@ void QumulatorGraphics::print()
 
 void QumulatorGraphics::save(string location)
 {
-	draw();
-
 	ofstream file;
 	file.open(location, ofstream::trunc);
 
