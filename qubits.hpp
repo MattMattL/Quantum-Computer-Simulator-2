@@ -32,6 +32,7 @@ public:
 	void CNOT(int, int);
 	void CY(int, int);
 	void CZ(int, int);
+	void Toffoli(int, int, int);
 
 	void Swap(int, int);
 
@@ -67,7 +68,7 @@ Qubits<T>::~Qubits()
 	delete states;
 }
 
-/* Quantum Logic Gates */
+/* Single-Qubit Gates */
 
 template<class T>
 void Qubits<T>::H(int qubit)
@@ -129,6 +130,8 @@ void Qubits<T>::Z(int qubit)
 	(*states) = m * (*states);
 }
 
+/* Contol Gates */
+
 template<class T>
 Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
 {
@@ -152,7 +155,7 @@ Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
 			m2 = m2.tensor(gate.Identity());
 	}
 
-	 return m1 + m2;
+	return m1 + m2;
 }
 
 template<class T>
@@ -181,6 +184,71 @@ void Qubits<T>::CZ(int control, int target)
 
 	(*states) = controlledU(control, target, gate.Pauli_Z()) * (*states);
 }
+
+template<class T>
+void Qubits<T>::Toffoli(int control1, int control2, int target)
+{
+	if(enableGraphics)
+	{
+		vector<int> vecPos;
+		vecPos.push_back(control1);
+		vecPos.push_back(control2);
+		vecPos.push_back(target);
+
+		vector<char> vecGate;
+		vecGate.push_back('*');
+		vecGate.push_back('*');
+		vecGate.push_back('@');
+		vecGate.push_back('|');
+
+		graphics.add(vecPos, vecGate, graphics.MARK_AND_FILL);
+	}
+
+	Matrix<T> m1(1, 1), m2(1, 1), m3(1, 1), m4(1, 1), m00(2, 2), m11(2, 2);
+
+	m1.setToI();
+	m2.setToI();
+	m3.setToI();
+	m4.setToI();
+	m00.set(0, 0, 1, 0);
+	m11.set(1, 1, 1, 0);
+
+	for(int i=numQubits - 1; i>=0; i--)
+	{
+		if(i == control1)
+		{
+			m1 = m1.tensor(m00);
+			m2 = m2.tensor(m00);
+			m3 = m3.tensor(m11);
+			m4 = m4.tensor(m11);
+		}
+		else if(i == control2)
+		{
+			m1 = m1.tensor(m00);
+			m2 = m2.tensor(m11);
+			m3 = m3.tensor(m00);
+			m4 = m4.tensor(m11);
+		}
+		else if(i == target)
+		{
+			m1 = m1.tensor(gate.Identity());
+			m2 = m2.tensor(gate.Identity());
+			m3 = m3.tensor(gate.Identity());
+			m4 = m4.tensor(gate.Pauli_X());
+		}
+		else
+		{
+			m1 = m1.tensor(gate.Identity());
+			m2 = m2.tensor(gate.Identity());
+			m3 = m3.tensor(gate.Identity());
+			m4 = m4.tensor(gate.Identity());
+		}
+	}
+
+	(*states) = (m1 + m2 + m3 + m4) * (*states);
+}
+
+/* Other Multi-Qubit Gates */
 
 template<class T>
 void Qubits<T>::Swap(int q1, int q2)
