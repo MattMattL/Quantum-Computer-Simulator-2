@@ -23,7 +23,7 @@ public:
 	QuantumGates();
 	~QuantumGates();
 
-	/* Single Qubit Operations */
+	/* Single Qubit Gates */
 	Matrix<T> Identity() { return *identity; }
 	Matrix<T> Identity(int);
 
@@ -36,7 +36,7 @@ public:
 
 	Matrix<T> Phase() { return *phase; }
 
-	/* Multi-Qubit Operations */
+	/* Multi-Qubit Gates */
 	Matrix<T> CNOT() { return *cnot; }
 };
 
