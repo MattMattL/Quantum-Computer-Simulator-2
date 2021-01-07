@@ -33,6 +33,26 @@ private:
 	int max(int num1, int num2) { return (num1 > num2)? num1 : num2; }
 	int min(int num1, int num2) { return (num1 < num2)? num1 : num2; }
 
+	int max(vector<int> vec)
+	{
+		int num = vec.at(0);
+
+		for(int i=1; i<vec.size(); i++)
+			num = max(num, vec.at(i));
+
+		return num;
+	}
+
+	int min(vector<int> vec)
+	{
+		int num = vec.at(0);
+
+		for(int i=1; i<vec.size(); i++)
+			num = min(num, vec.at(i));
+
+		return num;
+	}
+
 	void link(string*, int, int, char);
 	void fill(string*, int, int, char);
 
@@ -222,33 +242,33 @@ void QumulatorGraphics::draw()
 				break;
 
 			case MARK_AND_FILL:
-				fill(&currLine, currPos.at(0), currPos.at(1), currGates.back());
+				fill(&currLine, min(currPos), max(currPos), currGates.back());
 
 				for(int j=0; j<currPos.size(); j++)
 					currLine[currPos.at(j)] = currGates.at(j);
 				break;
 
 			case MARK_AND_LINK:
-				link(&currLine, currPos.at(0), currPos.at(1), currGates.back());
+				link(&currLine, min(currPos), max(currPos), currGates.back());
 
 				for(int j=0; j<currPos.size(); j++)
 					currLine[currPos.at(j)] = currGates.at(j);
 				break;
 
 			case FILL_BETWEEN:
-				fill(&currLine, currPos.at(0) + 1, currPos.at(1) - 1, currGates.at(0));
+				fill(&currLine, min(currPos) + 1, max(currPos) - 1, currGates.at(0));
 				break;
 			
 			case LINK_BETWEEN:
-				link(&currLine, currPos.at(0) + 1, currPos.at(1) - 1, currGates.at(0));
+				link(&currLine, min(currPos) + 1, max(currPos) - 1, currGates.at(0));
 				break;
 			
 			case FILL_ALL:
-				fill(&currLine, currPos.at(0), currPos.at(1), currGates.at(0));
+				fill(&currLine, min(currPos), max(currPos), currGates.at(0));
 				break;
 			
 			case LINK_ALL:
-				link(&currLine, currPos.at(0), currPos.at(1), currGates.at(0));
+				link(&currLine, min(currPos), max(currPos), currGates.at(0));
 				break;
 
 			default:
