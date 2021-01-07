@@ -1,6 +1,7 @@
 #ifndef QUMULATOR_QUBITS_HPP
 #define QUMULATOR_QUBITS_HPP
 
+#include <stdio.h>
 #include "complex.hpp"
 #include "matrix.hpp"
 #include "quantum_gates.hpp"
@@ -39,7 +40,9 @@ public:
 	/* Utilities */
 	unsigned int size();
 	unsigned int length();
+
 	void print();
+	void save(string);
 
 	/* Circuit Diagram */
 	QumulatorGraphics graphics;
@@ -294,6 +297,27 @@ void Qubits<T>::print()
 	}
 
 	cout << endl;
+}
+
+template<class T>
+void Qubits<T>::save(string location)
+{
+	FILE *file;
+	file = fopen(location.c_str(), "wt");
+
+	for(int i=0; i<numOfCoeffs; i++)
+	{
+		string decToBin;
+
+		for(int j=0; j<numQubits; j++)
+			decToBin.insert(decToBin.begin(), (i >> j & 1) + '0');
+
+		fprintf(file, "|%s⟩", decToBin.c_str());
+		fprintf(file, " = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
+		fprintf(file, "  (%.3f)\n", states->get(i, 0).normSq());	
+	}
+
+	fclose(file);
 }
 
 #endif
