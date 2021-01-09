@@ -204,23 +204,28 @@ void QumulatorGraphics::margin()
 
 void QumulatorGraphics::draw()
 {
-	map.clear();
-
 	add(0, ' ', MARK); // dummy element
 
 	string emptyLines, currLine;
 
+	// initialise empty lines
+	for(int j=0; j<numOfLines; j++)
+		emptyLines += "- ";
+
+	emptyLines += "= ";
+
+	// draw indices
 	for(int j=0; j<numOfLines; j++)
 	{
 		currLine += (j + '0');
 		currLine += " ";
 	}
 
+	currLine += "c";
+
 	map.push_back(currLine);
 
-	for(int j=0; j<numOfLines; j++)
-		emptyLines += "- ";
-
+	// draw margin
 	currLine = emptyLines;
 
 	map.push_back(emptyLines);
@@ -297,7 +302,7 @@ void QumulatorGraphics::draw()
 
 void QumulatorGraphics::print()
 {
-	for(int j=0; j<2 * numOfLines - 1; j++)
+	for(int j=0; j<map.at(0).size(); j++)
 	{
 		for(int i=0; i<map.size(); i++)
 			cout << map.at(i).at(j);
@@ -311,7 +316,7 @@ void QumulatorGraphics::save(string location)
 	ofstream file;
 	file.open(location, ofstream::trunc);
 
-	for(int j=0; j<2 * numOfLines - 1; j++)
+	for(int j=0; j<map.at(0).size(); j++)
 	{
 		for(int i=0; i<map.size(); i++)
 			file << map.at(i).at(j);

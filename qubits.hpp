@@ -2,6 +2,8 @@
 #define QUMULATOR_QUBITS_HPP
 
 #include <stdio.h>
+#include <queue>
+#include <ctime>
 #include "complex.hpp"
 #include "matrix.hpp"
 #include "quantum_gates.hpp"
@@ -14,6 +16,9 @@ private:
 	unsigned int numQubits;
 	unsigned int numOfCoeffs;
 
+	int measurement;
+	priority_queue<int, vector<int>, greater<int> > measured;
+
 	QuantumGates<T> gate;
 
 public:
@@ -21,6 +26,7 @@ public:
 
 	/* Constructor and Deconstructor */
 	Qubits(int);
+	Qubits(int, unsigned int);
 	~Qubits();
 
 	/* Quantum Logic Gates */
@@ -28,6 +34,7 @@ public:
 	void X(int);
 	void Y(int);
 	void Z(int);
+	void Measure(int);
 
 	Matrix<T> controlledU(int, int, Matrix<T>);
 	void CNOT(int, int);
@@ -62,6 +69,7 @@ Qubits<T>::Qubits(int qubits)
 	states = new Matrix<T>(numOfCoeffs, 1);
 	states->set(0, 0, 1, 0);
 
+	measurement = -1;
 	enableGraphics = true;
 }
 
@@ -131,6 +139,38 @@ void Qubits<T>::Z(int qubit)
 		m = m.tensor((i == qubit)? gate.Pauli_Z() : gate.Identity());
 
 	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::Measure(int qubit)
+{
+	/*
+		Add a matrix-based measurement method later.
+	*/
+
+	if(enableGraphics)
+		graphics.add(qubit, numQubits, 'M', 'V', '|', graphics.MARK_AND_FILL);
+
+	if(measurement < 0)
+	{
+		srand(time(NULL));
+
+		T probability = (T)(rand() % 10000) / 10000;
+		T sum = 0;
+
+		for(int n=0; n<numOfCoeffs; n++)
+		{
+			sum += states->get(n, 0).normSq();
+
+			if(sum >= probability)
+			{
+				measurement = n;
+				break;
+			}
+		}
+	}
+
+	measured.push(qubit);
 }
 
 /* Contol Gates */
@@ -296,7 +336,16 @@ void Qubits<T>::print()
 		printf("  (%.3f)\n", states->get(i, 0).normSq());	
 	}
 
-	cout << endl;
+	priority_queue<int, vector<int>, greater<int> > temp = measured;
+	printf("\n");
+
+	while(!temp.empty())
+	{
+		printf("Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
+		temp.pop();
+	}
+
+	printf("\n");
 }
 
 template<class T>
@@ -316,6 +365,17 @@ void Qubits<T>::save(string location)
 		fprintf(file, " = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
 		fprintf(file, "  (%.3f)\n", states->get(i, 0).normSq());	
 	}
+
+	priority_queue<int, vector<int>, greater<int> > temp = measured;
+	fprintf(file, "\n");
+
+	while(!temp.empty())
+	{
+		fprintf(file, "Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
+		temp.pop();
+	}
+
+	fprintf(file, "\n");
 
 	fclose(file);
 }
