@@ -149,7 +149,7 @@ void Qubits<T>::Measure(int qubit)
 	*/
 
 	if(enableGraphics)
-		graphics.add(qubit, numQubits, 'M', 'V', '|', graphics.MARK_AND_FILL);
+		graphics.add(qubit, numQubits + qubit, 'M', 'V', '|', graphics.MARK_AND_FILL);
 
 	if(measurement < 0)
 	{

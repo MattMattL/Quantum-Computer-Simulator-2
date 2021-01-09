@@ -219,7 +219,8 @@ void QumulatorGraphics::draw()
 	for(int j=0; j<numOfLines; j++)
 		emptyLines += "- ";
 
-	emptyLines += "= ";
+	for(int j=0; j<numOfLines; j++)
+		emptyLines += "= ";
 
 	// draw indices
 	for(int j=0; j<numOfLines; j++)
@@ -228,7 +229,8 @@ void QumulatorGraphics::draw()
 		currLine += " ";
 	}
 
-	currLine += "c";
+	for(int j=0; j<numOfLines; j++)
+		currLine += "c ";
 
 	map.push_back(currLine);
 
