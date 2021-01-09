@@ -11,7 +11,7 @@
 // Qumulator visualisation library
 #include "qumulator_graphics.hpp"
 
-// Other libraries used
+// Other libraries contained
 #include "complex.hpp"
 #include "matrix.hpp"
 #include "quantum_gates.hpp"
