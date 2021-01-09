@@ -43,7 +43,7 @@ public:
 
 	/* Matrix Manipulation */
 	void setToI();
-	Matrix<T> transpose();
+	void transpose();
 
 	/* Arithmetic Operations */
 	void operator = (Matrix);
@@ -199,15 +199,19 @@ void Matrix<T>::setToI()
 }
 
 template<class T>
-Matrix<T> Matrix<T>::transpose()
+void Matrix<T>::transpose()
 {
-	Matrix<T> result(cols(), rows());
-
 	for(int i=0; i<rows(); ++i)
-		for(int j=0; j<cols(); ++j)
-			result.set(j, i, matrix.at(i).at(j));
+	{
+		for(int j=i+1; j<cols(); ++j)
+		{
+			Complex<T> temp;
 
-	return result;
+			temp = get(i, j);
+			set(i, j, get(j, i));
+			set(j, i, temp);
+		}
+	}
 }
 
 /* Arithmetic Operations */
