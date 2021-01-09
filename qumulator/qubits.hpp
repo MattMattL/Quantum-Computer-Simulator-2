@@ -16,8 +16,7 @@ private:
 	unsigned int numQubits;
 	unsigned int numOfCoeffs;
 
-	int measurement;
-	priority_queue<int, vector<int>, greater<int> > measured;
+	int *measurement;
 
 	QuantumGates<T> gate;
 
@@ -61,6 +60,7 @@ public:
 template<class T>
 Qubits<T>::Qubits(int qubits)
 {
+	// initialise qubit dimensions
 	numQubits = qubits;
 	numOfCoeffs = 1 << numQubits;
 
@@ -69,14 +69,22 @@ Qubits<T>::Qubits(int qubits)
 	states = new Matrix<T>(numOfCoeffs, 1);
 	states->set(0, 0, 1, 0);
 
-	measurement = -1;
+	// initialise output vector
+	measurement = new int[numQubits];
+
+	for(int i=0; i<numQubits; i++)
+		measurement[i] = -1;
+
+	// initialise preferences
 	enableGraphics = true;
+	srand(time(NULL));
 }
 
 template<class T>
 Qubits<T>::~Qubits()
 {
 	delete states;
+	delete measurement;
 }
 
 /* Single-Qubit Gates */
@@ -144,33 +152,48 @@ void Qubits<T>::Z(int qubit)
 template<class T>
 void Qubits<T>::Measure(int qubit)
 {
-	/*
-		Add a matrix-based measurement method later.
-	*/
+	T probOfOne = 0;
 
-	if(enableGraphics)
-		graphics.add(qubit, numQubits + qubit, 'M', 'V', '|', graphics.MARK_AND_FILL);
-
-	if(measurement < 0)
+	for(int i=0; i<numOfCoeffs; i++)
 	{
-		srand(time(NULL));
+		if((i >> qubit) & 1)
+			probOfOne += states->get(i, 0).normSq();
+	}
 
-		T probability = (T)(rand() % 10000) / 10000;
-		T sum = 0;
+	T randNum = (T)(rand() % 10000) / 10000;
+	int result = (randNum <= probOfOne)? 1 : 0;
 
-		for(int n=0; n<numOfCoeffs; n++)
+	for(int i=0; i<numOfCoeffs; i++)
+	{
+		if((i >> qubit) & 1)
+			continue;
+
+		if(i + (1 << qubit) >= numOfCoeffs)
+			continue;
+
+		Complex<T> c1, c2;
+
+		c1 = states->get(i, 0);
+		c2 = states->get(i + (1 << qubit), 0);
+
+		T magnitude = sqrt(c1.normSq() + c2.normSq());
+
+		if(result)
 		{
-			sum += states->get(n, 0).normSq();
-
-			if(sum >= probability)
-			{
-				measurement = n;
-				break;
-			}
+			states->set(i, 0, 0, 0);
+			states->set(i + (1 << qubit), 0, magnitude, 0);
+		}
+		else
+		{
+			states->set(i, 0, magnitude, 0);
+			states->set(i + (1 << qubit), 0, 0, 0);	
 		}
 	}
 
-	measured.push(qubit);
+	measurement[qubit] = result;
+
+	if(enableGraphics)
+		graphics.add(qubit, numQubits + qubit, 'M', result + '0', '|', graphics.MARK_AND_FILL);
 }
 
 /* Contol Gates */
@@ -336,13 +359,12 @@ void Qubits<T>::print()
 		printf("  (%.3f)\n", states->get(i, 0).normSq());	
 	}
 
-	priority_queue<int, vector<int>, greater<int> > temp = measured;
 	printf("\n");
 
-	while(!temp.empty())
+	for(int i=0; i<numQubits; i++)
 	{
-		printf("Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
-		temp.pop();
+		if(measurement[i] >= 0)
+			printf("Qubit%2d: %d\n", i, measurement[i]);
 	}
 
 	printf("\n");
@@ -366,13 +388,12 @@ void Qubits<T>::save(string location)
 		fprintf(file, "  (%.3f)\n", states->get(i, 0).normSq());	
 	}
 
-	priority_queue<int, vector<int>, greater<int> > temp = measured;
 	fprintf(file, "\n");
 
-	while(!temp.empty())
+	for(int i=0; i<numQubits; i++)
 	{
-		fprintf(file, "Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
-		temp.pop();
+		if(measurement[i] >= 0)
+			fprintf(file, "Qubit%2d: %d\n", i, measurement[i]);
 	}
 
 	fprintf(file, "\n");
