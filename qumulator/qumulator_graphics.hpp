@@ -13,7 +13,7 @@ public:
 	enum gateType: int
 	{
 		NULL_TYPE = 0,
-		SPACE = 10,
+		MARGIN = 10,
 		SINGLE_QUBIT = 100,
 		TWO_QUBITS = 200,
 		THREE_QUBITS = 300,
@@ -258,13 +258,13 @@ void QumulatorGraphics::draw()
 				break;
 		}
 
-		// draw new lines for next gate
+		// draw new lines for the next gate
 		bool isMultiQubitGate = currPos.size() > 1 || nextPos.size() > 1;
 		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != '-';
-		bool requriesSpace = gateType.at(i) == SPACE;
+		bool requiresSpace = gateType.at(i) == MARGIN;
 		bool isMeasurement = gateType.at(i) != MEASURE && gateType.at(i + 1) == MEASURE;
 
-		if(isMultiQubitGate || gateOverlaps || requriesSpace || isMeasurement)
+		if(isMultiQubitGate || gateOverlaps || requiresSpace || isMeasurement)
 		{
 			newLine();
 			newLine();
