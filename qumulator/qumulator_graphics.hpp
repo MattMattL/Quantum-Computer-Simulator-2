@@ -9,17 +9,45 @@ class QumulatorGraphics
 {
 public:
 	enum gateType: int;
-	enum markType: int;
+
+	enum gateType: int
+	{
+		NULL_TYPE = 0,
+		SPACE = 10,
+		SINGLE_QUBIT = 100,
+		TWO_QUBITS = 200,
+		THREE_QUBITS = 300,
+		MEASURE = 400,
+	};
+
+	QumulatorGraphics();
+	QumulatorGraphics(int);
+	~QumulatorGraphics();
+	void initialise(int);
+
+	void add(int, char, gateType);
+	void add(int, int, char, gateType);
+	void add(int, int, char, char, gateType);
+	void add(int, int, char, char, char, gateType);
+	void add(vector<int>, vector<char>, gateType);
+
+	// Deprecated
+	void newLine();
+
+	void draw();
+	void print();
+	void save(string);
 
 private:
 	struct logger
 	{
 		vector<vector<int> > pos;
 		vector<vector<char> > gate;
-		vector<markType> options;
+		vector<gateType> options;
 	} logger;
 
 	vector<string> map;
+	bool *isClassical;
 
 	int numOfLines;
 
@@ -30,8 +58,14 @@ private:
 		*num2 = temp;
 	}
 
-	int max(int num1, int num2) { return (num1 > num2)? num1 : num2; }
-	int min(int num1, int num2) { return (num1 < num2)? num1 : num2; }
+	int max(int num1, int num2)
+	{
+		return (num1 > num2)? num1 : num2;
+	}
+	int min(int num1, int num2)
+	{
+		return (num1 < num2)? num1 : num2;
+	}
 
 	int max(vector<int> vec)
 	{
@@ -53,49 +87,8 @@ private:
 		return num;
 	}
 
-	void link(string*, int, int, char);
-	void fill(string*, int, int, char);
-
-public:
-	enum gateType: int
-	{
-		LINE = (0 << 8) + 0,
-		HADAMARD = (1 << 8) + 10, // required_qubits << 8 + serial
-		PAULI_X = (1 << 8) + 11,
-		PAULI_Y = (1 << 8) + 12,
-		PAULI_Z = (1 << 8) + 13,
-		CNOT = (2 << 8) + 14,
-	};
-
-	enum markType: int
-	{
-		MARK = 10,
-		MARK_AND_FILL = 11,
-		MARK_AND_LINK = 12,
-		FILL_BETWEEN = 20,
-		LINK_BETWEEN = 21,
-		FILL_ALL = 30,
-		LINK_ALL = 31,
-	};
-
-	QumulatorGraphics();
-	QumulatorGraphics(int);
-	~QumulatorGraphics();
-
-	void setSize(int);
-
-	void add(int, char, markType);
-	void add(int, int, char, markType);
-	void add(int, int, char, char, markType);
-	void add(int, int, char, char, char, markType);
-	void add(vector<int>, vector<char>, markType);
-
-	// Deprecated
-	void margin();
-
-	void draw();
-	void print();
-	void save(string);
+	void link(int, int, int, char);
+	void fill(int, int, int, char);
 };
 
 QumulatorGraphics::QumulatorGraphics()
@@ -105,20 +98,25 @@ QumulatorGraphics::QumulatorGraphics()
 
 QumulatorGraphics::QumulatorGraphics(int qubits)
 {
-	setSize(qubits);
+	initialise(qubits);
 }
 
 QumulatorGraphics::~QumulatorGraphics()
 {
-
+	delete[] isClassical;
 }
 
-void QumulatorGraphics::setSize(int qubits)
+void QumulatorGraphics::initialise(int qubits)
 {
 	numOfLines = qubits;
+
+	isClassical = new bool[qubits];
+
+	for(int i=0; i<qubits; i++)
+		isClassical[i] = false;
 }
 
-void QumulatorGraphics::add(int pos, char gate, markType type)
+void QumulatorGraphics::add(int pos, char gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos);
@@ -129,7 +127,7 @@ void QumulatorGraphics::add(int pos, char gate, markType type)
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate, markType type)
+void QumulatorGraphics::add(int pos1, int pos2, char gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -141,7 +139,7 @@ void QumulatorGraphics::add(int pos1, int pos2, char gate, markType type)
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, markType type)
+void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -154,7 +152,7 @@ void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, markType
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, char gate3, markType type)
+void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, char gate3, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -168,7 +166,7 @@ void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, char gat
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(vector<int> pos, vector<char> gates, markType type)
+void QumulatorGraphics::add(vector<int> pos, vector<char> gates, gateType type)
 {
 	for(int i=0; i<pos.size(); i++)
 		pos.at(i) *= 2;
@@ -178,135 +176,111 @@ void QumulatorGraphics::add(vector<int> pos, vector<char> gates, markType type)
 	logger.options.push_back(type);
 }
 
-void QumulatorGraphics::link(string *str, int start, int end, char ch)
+void QumulatorGraphics::link(int ptr, int start, int end, char ch)
 {
-	if(start > end)
-		swap(&start, &end);
-
 	for(int i=start; i<=end; i++)
-		(*str)[i] = ((*str)[i] != '-')? ch : (*str)[i];
+	{
+		if(map.at(i).at(ptr) != '-')
+			map.at(i).at(ptr) = ch;
+	}
 }
 
-void QumulatorGraphics::fill(string *str, int start, int end, char ch)
+void QumulatorGraphics::fill(int ptr, int start, int end, char ch)
 {
-	if(start > end)
-		swap(&start, &end);
-
 	for(int i=start; i<=end; i++)
-		(*str)[i] = ch;
+		map.at(i).at(ptr) = ch;
 }
 
 // Deprecated
-void QumulatorGraphics::margin()
+void QumulatorGraphics::newLine()
 {
-	// add(0, LINE);
+	for(int i=0; i<numOfLines; i++)
+	{
+		map.at(i * 2) += (isClassical[i])? "=" : "-";
+		map.at(i * 2 + 1) += " ";
+	}
 }
 
 void QumulatorGraphics::draw()
 {
-	add(0, ' ', MARK); // dummy element
-
-	string emptyLines, currLine;
-
-	// initialise empty lines
-	for(int j=0; j<numOfLines; j++)
-		emptyLines += "- ";
-
-	emptyLines += "= ";
-
-	// draw indices
-	for(int j=0; j<numOfLines; j++)
+	// initialise map
+	for(int i=0; i<numOfLines; i++)
 	{
-		currLine += (j + '0');
-		currLine += " ";
+		map.push_back("-");
+		map.push_back(" ");
 	}
 
-	currLine += "c";
+	newLine();
+	newLine();
 
-	map.push_back(currLine);
+	// draw circuit diagram
+	int ptr = 2;
 
-	// draw margin
-	currLine = emptyLines;
+	add(0, ' ', NULL_TYPE);
 
-	map.push_back(emptyLines);
-	map.push_back(emptyLines);
-
-	// add one virtical line each time
 	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
+		vector<gateType> gateType = logger.options;
 		vector<int> currPos = logger.pos.at(i);
 		vector<int> nextPos = logger.pos.at(i + 1);
 		vector<char> currGates = logger.gate.at(i);
 		vector<char> nextGates = logger.gate.at(i + 1);
 
-		switch(logger.options.at(i))
+		// draw circuits on current line
+		switch(gateType.at(i))
 		{
-			case MARK:
-				for(int j=0; j<currGates.size(); j++)
-					currLine[currPos.at(j)] = currGates.at(j);
+			case SINGLE_QUBIT:
+				isClassical[currPos.at(0) / 2] = false;
+				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				break;
 
-			case MARK_AND_FILL:
-				fill(&currLine, min(currPos), max(currPos), currGates.back());
-
-				for(int j=0; j<currPos.size(); j++)
-					currLine[currPos.at(j)] = currGates.at(j);
+			case TWO_QUBITS:
+				// isClassical[currPos.at(0) / 2] = false;
+				fill(ptr, min(currPos), max(currPos), '|');
+				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
+				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
 				break;
 
-			case MARK_AND_LINK:
-				link(&currLine, min(currPos), max(currPos), currGates.back());
-
-				for(int j=0; j<currPos.size(); j++)
-					currLine[currPos.at(j)] = currGates.at(j);
+			case THREE_QUBITS:
+				// isClassical[currPos.at(0) / 2] = false;
+				fill(ptr, min(currPos), max(currPos), '|');
+				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
+				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
+				map.at(currPos.at(2)).at(ptr) = currGates.at(2);
 				break;
 
-			case FILL_BETWEEN:
-				fill(&currLine, min(currPos) + 1, max(currPos) - 1, currGates.at(0));
-				break;
-			
-			case LINK_BETWEEN:
-				link(&currLine, min(currPos) + 1, max(currPos) - 1, currGates.at(0));
-				break;
-			
-			case FILL_ALL:
-				fill(&currLine, min(currPos), max(currPos), currGates.at(0));
-				break;
-			
-			case LINK_ALL:
-				link(&currLine, min(currPos), max(currPos), currGates.at(0));
+			case MEASURE:
+				isClassical[currPos.at(0) / 2] = true;
+				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				break;
 
 			default:
 				break;
 		}
 
-		bool gateOverlaps = currLine[nextPos.at(0)] != '-';
+		// draw new lines for next gate
+		bool isMultiQubitGate = currPos.size() > 1 || nextPos.size() > 1;
+		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != '-';
+		bool requriesSpace = gateType.at(i) == SPACE;
+		bool isMeasurement = gateType.at(i) != MEASURE && gateType.at(i + 1) == MEASURE;
 
-		if(currPos.size() > 1 || nextPos.size() > 1 || gateOverlaps)
+		if(isMultiQubitGate || gateOverlaps || requriesSpace || isMeasurement)
 		{
-			if(i >= logger.gate.size() - 2)
-				break;
+			newLine();
+			newLine();
+			newLine();
 
-			map.push_back(currLine);
-			map.push_back(emptyLines);
-			map.push_back(emptyLines);
-
-			currLine = emptyLines;
+			ptr += 3;
 		}
 	}
-
-	map.push_back(currLine);
-	map.push_back(emptyLines);
-	map.push_back(emptyLines);
 }
 
 void QumulatorGraphics::print()
 {
-	for(int j=0; j<map.at(0).size(); j++)
+	for(int i=0; i<map.size(); i++)
 	{
-		for(int i=0; i<map.size(); i++)
+		for(int j=0; j<map.at(0).size(); j++)
 			cout << map.at(i).at(j);
-
 		cout << endl;
 	}
 }
@@ -316,11 +290,10 @@ void QumulatorGraphics::save(string location)
 	ofstream file;
 	file.open(location, ofstream::trunc);
 
-	for(int j=0; j<map.at(0).size(); j++)
+	for(int i=0; i<map.size(); i++)
 	{
-		for(int i=0; i<map.size(); i++)
+		for(int j=0; j<map.at(0).size(); j++)
 			file << map.at(i).at(j);
-
 		file << endl;
 	}
 	
