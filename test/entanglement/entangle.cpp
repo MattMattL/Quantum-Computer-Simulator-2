@@ -1,5 +1,5 @@
 /*
-	Testing multi-qubit gates and visualisation library by constructing
+	Testing multi-qubit gates and the visualisation library by constructing
 	a simple circuit - initialising and entangling five qubits.
 */
 
