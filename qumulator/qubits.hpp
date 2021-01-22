@@ -14,7 +14,7 @@ class Qubits
 {
 private:
 	unsigned int numQubits;
-	unsigned int numOfCoeffs;
+	unsigned int numCoeffs;
 
 	int measurement;
 	priority_queue<int, vector<int>, greater<int> > measured;
@@ -62,11 +62,11 @@ template<class T>
 Qubits<T>::Qubits(int qubits)
 {
 	numQubits = qubits;
-	numOfCoeffs = 1 << numQubits;
+	numCoeffs = 1 << numQubits;
 
 	graphics.initialise(numQubits);
 
-	states = new Matrix<T>(numOfCoeffs, 1);
+	states = new Matrix<T>(numCoeffs, 1);
 	states->set(0, 0, 1, 0);
 
 	measurement = -1;
@@ -155,7 +155,7 @@ void Qubits<T>::Measure(int qubit)
 		T probability = (T)(rand() % 10000) / 10000;
 		T sum = 0;
 
-		for(int n=0; n<numOfCoeffs; n++)
+		for(int n=0; n<numCoeffs; n++)
 		{
 			sum += states->get(n, 0).normSq();
 
@@ -318,13 +318,13 @@ template<class T>
 unsigned int Qubits<T>::length()
 {
 	// Returns the number of coefficients representing the states.
-	return numOfCoeffs;
+	return numCoeffs;
 }
 
 template<class T>
 void Qubits<T>::print()
 {
-	for(int i=0; i<numOfCoeffs; i++)
+	for(int i=0; i<numCoeffs; i++)
 	{
 		string decToBin;
 
@@ -354,7 +354,7 @@ void Qubits<T>::save(string location)
 	FILE *file;
 	file = fopen(location.c_str(), "wt");
 
-	for(int i=0; i<numOfCoeffs; i++)
+	for(int i=0; i<numCoeffs; i++)
 	{
 		string decToBin;
 
