@@ -71,6 +71,8 @@ Qubits<T>::Qubits(int qubits)
 
 	measurement = -1;
 	enableGraphics = true;
+
+	srand(time(NULL));
 }
 
 template<class T>
@@ -144,31 +146,47 @@ void Qubits<T>::Z(int qubit)
 template<class T>
 void Qubits<T>::Measure(int qubit)
 {
-	/*
-		Add a matrix-based measurement method later.
-	*/
+	// determine classical output
+	T probOfZero = 0;
+	T probability = (T)(rand() % 10000) / 10000;
+	unsigned int result;
 
-	if(measurement < 0)
+	for(int i=0; i<numCoeffs; i++)
 	{
-		srand(time(NULL));
+		if(((i >> qubit) & 1) == 0)
+			probOfZero += states->get(i, 0).normSq();
+	}
 
-		T probability = (T)(rand() % 10000) / 10000;
-		T sum = 0;
+	result = (probability <= probOfZero)? 0 : 1;
 
-		for(int n=0; n<numCoeffs; n++)
+	// remove unused states
+	for(int i=0; i<numCoeffs; i++)
+	{
+		if(((i >> qubit) & 1) != result)
 		{
-			sum += states->get(n, 0).normSq();
-
-			if(sum >= probability)
-			{
-				measurement = n;
-				break;
-			}
+			cout << i << endl;
+			states->set(i, 0, 0, 0);
 		}
 	}
 
-	measured.push(qubit);
+	// normalise the coefficients
+	Complex<T> factor;
 
+	if(result)
+		factor.setRe(sqrt(1 - probOfZero));
+	else
+		factor.setRe(sqrt(probOfZero));
+
+	for(int i=0; i<numCoeffs; i++)
+	{
+		Complex<T> coeff(states->get(i, 0).getRe(), states->get(i, 0).getIm());
+
+		coeff /= factor;
+
+		states->set(i, 0, coeff);
+	}
+
+	// add to circuit diagram
 	if(enableGraphics)
 		graphics.add(qubit, 'M', graphics.MEASURE);
 }
@@ -332,8 +350,13 @@ void Qubits<T>::print()
 			decToBin.insert(decToBin.begin(), (i >> j & 1) + '0');
 
 		printf("|%s⟩", decToBin.c_str());
-		printf(" = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
-		printf("  (%.3f)\n", states->get(i, 0).normSq());	
+
+		if(states->get(i, 0).getRe() || states->get(i, 0).getIm())
+			printf(" = %6.3f +%6.3fi", states->get(i, 0).getRe(), states->get(i, 0).getIm());
+		else
+			printf(" =  0             ");
+
+		printf("  (%.3f)\n", states->get(i, 0).normSq());
 	}
 
 	priority_queue<int, vector<int>, greater<int> > temp = measured;
