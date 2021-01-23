@@ -48,6 +48,8 @@ public:
 	unsigned int size();
 	unsigned int length();
 
+	void setRandomSeed(int);
+
 	void print();
 	void save(string);
 
@@ -334,6 +336,12 @@ unsigned int Qubits<T>::length()
 {
 	// Returns the number of coefficients representing the states.
 	return numCoeffs;
+}
+
+template<class T>
+void Qubits<T>::setRandomSeed(int seed)
+{
+	srand(seed);
 }
 
 template<class T>
