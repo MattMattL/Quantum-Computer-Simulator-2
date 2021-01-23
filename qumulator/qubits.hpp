@@ -163,10 +163,7 @@ void Qubits<T>::Measure(int qubit)
 	for(int i=0; i<numCoeffs; i++)
 	{
 		if(((i >> qubit) & 1) != result)
-		{
-			cout << i << endl;
 			states->set(i, 0, 0, 0);
-		}
 	}
 
 	// normalise the coefficients
