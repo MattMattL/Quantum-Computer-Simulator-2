@@ -8,8 +8,6 @@
 class QumulatorGraphics
 {
 public:
-	enum gateType: int;
-
 	enum gateType: int
 	{
 		NULL_TYPE = 0,
@@ -32,7 +30,7 @@ public:
 	void add(vector<int>, vector<char>, gateType);
 
 	// Deprecated
-	void newLine();
+	void newLine(int);
 
 	void draw();
 	void print();
@@ -192,13 +190,17 @@ void QumulatorGraphics::fill(int ptr, int start, int end, char ch)
 }
 
 // Deprecated
-void QumulatorGraphics::newLine()
+void QumulatorGraphics::newLine(int n)
 {
-	for(int i=0; i<numOfLines; i++)
+	for(int i=0; i<n; i++)
 	{
-		map.at(i * 2) += (isClassical[i])? "=" : "-";
-		map.at(i * 2 + 1) += " ";
+		for(int j=0; j<numOfLines; j++)
+		{
+			map.at(j * 2) += (isClassical[j])? "=" : "-";
+			map.at(j * 2 + 1) += " ";
+		}	
 	}
+	
 }
 
 void QumulatorGraphics::draw()
@@ -210,8 +212,7 @@ void QumulatorGraphics::draw()
 		map.push_back(" ");
 	}
 
-	newLine();
-	newLine();
+	newLine(2);
 
 	// draw circuit diagram
 	int ptr = 2;
@@ -220,14 +221,14 @@ void QumulatorGraphics::draw()
 
 	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
-		vector<gateType> gateType = logger.options;
+		vector<gateType> option = logger.options;
 		vector<int> currPos = logger.pos.at(i);
 		vector<int> nextPos = logger.pos.at(i + 1);
 		vector<char> currGates = logger.gate.at(i);
 		vector<char> nextGates = logger.gate.at(i + 1);
 
 		// draw circuits on current line
-		switch(gateType.at(i))
+		switch(option.at(i))
 		{
 			case SINGLE_QUBIT:
 				isClassical[currPos.at(0) / 2] = false;
@@ -260,19 +261,22 @@ void QumulatorGraphics::draw()
 
 		// draw new lines for the next gate
 		bool isMultiQubitGate = currPos.size() > 1 || nextPos.size() > 1;
-		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != '-';
-		bool requiresSpace = gateType.at(i) == MARGIN;
-		bool isMeasurement = gateType.at(i) != MEASURE && gateType.at(i + 1) == MEASURE;
+		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != '-' && map.at(nextPos.at(0)).at(ptr) != '=';
+		bool requiresSpace = option.at(i) == MARGIN;
+		bool isMeasuring = option.at(i) != MEASURE && option.at(i + 1) == MEASURE;
+		bool isLastGate = i >= logger.gate.size() - 2;
 
-		if(isMultiQubitGate || gateOverlaps || requiresSpace || isMeasurement)
+		if(isMultiQubitGate || gateOverlaps || requiresSpace || isMeasuring)
 		{
-			newLine();
-			newLine();
-			newLine();
-
-			ptr += 3;
+			if(!isLastGate)
+			{
+				newLine(3);
+				ptr += 3;	
+			}
 		}
 	}
+
+	newLine(3);
 }
 
 void QumulatorGraphics::print()
