@@ -312,14 +312,14 @@ void Qubits<T>::Toffoli(int control1, int control2, int target)
 /* Other Multi-Qubit Gates */
 
 template<class T>
-void Qubits<T>::Swap(int q1, int q2)
+void Qubits<T>::Swap(int qubit1, int qubit2)
 {
 	if(enableGraphics)
-		graphics.add(q1, q2, "x", "x", graphics.TWO_QUBITS);
+		graphics.add(qubit1, qubit2, "x", "x", graphics.TWO_QUBITS);
 
-	(*states) = controlledU(q1, q2, gate.Pauli_X()) *
-				controlledU(q2, q1, gate.Pauli_X()) *
-				controlledU(q1, q2, gate.Pauli_X()) *
+	(*states) = controlledU(qubit1, qubit2, gate.Pauli_X()) *
+				controlledU(qubit2, qubit1, gate.Pauli_X()) *
+				controlledU(qubit1, qubit2, gate.Pauli_X()) *
 				(*states);
 }
 
