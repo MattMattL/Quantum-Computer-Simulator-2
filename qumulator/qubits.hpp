@@ -9,7 +9,7 @@
 #include "quantum_gates.hpp"
 #include "qumulator_graphics.hpp"
 
-template<class T>
+template<class Type>
 class Qubits
 {
 private:
@@ -19,10 +19,10 @@ private:
 	int measurement;
 	priority_queue<int, vector<int>, greater<int> > measured;
 
-	QuantumGates<T> gate;
+	QuantumGates<Type> gate;
 
 public:
-	Matrix<T> *states;
+	Matrix<Type> *states;
 
 	/* Constructor and Deconstructor */
 	Qubits(int);
@@ -36,10 +36,10 @@ public:
 	void Z(int);
 	void T(int);
 	void S(int);
-	void U(Matrix<T>);
+	void U(Matrix<Type>, int);
 	unsigned int Measure(int);
 
-	Matrix<T> controlledU(int, int, Matrix<T>);
+	Matrix<Type> controlledU(int, int, Matrix<Type>);
 	void CNOT(int, int);
 	void CY(int, int);
 	void CZ(int, int);
@@ -63,15 +63,15 @@ public:
 
 /* Constructor and Deconstructor */
 
-template<class T>
-Qubits<T>::Qubits(int qubits)
+template<class Type>
+Qubits<Type>::Qubits(int qubits)
 {
 	numQubits = qubits;
 	numCoeffs = 1 << numQubits;
 
 	graphics.initialise(numQubits);
 
-	states = new Matrix<T>(numCoeffs, 1);
+	states = new Matrix<Type>(numCoeffs, 1);
 	states->set(0, 0, 1, 0);
 
 	measurement = -1;
@@ -80,21 +80,21 @@ Qubits<T>::Qubits(int qubits)
 	srand(time(NULL));
 }
 
-template<class T>
-Qubits<T>::~Qubits()
+template<class Type>
+Qubits<Type>::~Qubits()
 {
 	delete states;
 }
 
 /* Single-Qubit Gates */
 
-template<class T>
-void Qubits<T>::H(int qubit)
+template<class Type>
+void Qubits<Type>::H(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "H", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -103,13 +103,13 @@ void Qubits<T>::H(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::X(int qubit)
+template<class Type>
+void Qubits<Type>::X(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "X", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -118,13 +118,13 @@ void Qubits<T>::X(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::Y(int qubit)
+template<class Type>
+void Qubits<Type>::Y(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "Y", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -133,13 +133,13 @@ void Qubits<T>::Y(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::Z(int qubit)
+template<class Type>
+void Qubits<Type>::Z(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "Z", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -148,13 +148,13 @@ void Qubits<T>::Z(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::T(int qubit)
+template<class Type>
+void Qubits<Type>::T(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "T", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -163,13 +163,13 @@ void Qubits<T>::T(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::S(int qubit)
+template<class Type>
+void Qubits<Type>::S(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "S", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
@@ -178,30 +178,30 @@ void Qubits<T>::S(int qubit)
 	(*states) = m * (*states);
 }
 
-template<class T>
-void Qubits<T>::U(Matrix<T> m)
+template<class Type>
+void Qubits<Type>::U(Matrix<Type> u, int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "U", graphics.SINGLE_QUBIT);
 
-	Matrix<T> m(1, 1);
+	Matrix<Type> m(1, 1);
 	m.setToI();
 
 	for(int i=numQubits - 1; i>=0; --i)
-		m = m.tensor((i == qubit)? m : gate.Identity());
+		m = m.tensor((i == qubit)? u : gate.Identity());
 
 	(*states) = m * (*states);
 }
 
-template<class T>
-unsigned int Qubits<T>::Measure(int qubit)
+template<class Type>
+unsigned int Qubits<Type>::Measure(int qubit)
 {
 	if(enableGraphics)
 		graphics.add(qubit, "M", graphics.MEASURE);
 
 	// determine classical output
-	T probOfZero = 0;
-	T probability = (T)(rand() % 10000) / 10000;
+	Type probOfZero = 0;
+	Type probability = (Type)(rand() % 10000) / 10000;
 	unsigned int result;
 
 	for(int i=0; i<numCoeffs; ++i)
@@ -220,7 +220,7 @@ unsigned int Qubits<T>::Measure(int qubit)
 	}
 
 	// normalise the coefficients
-	Complex<T> factor;
+	Complex<Type> factor;
 
 	if(result)
 		factor.setRe(sqrt(1 - probOfZero));
@@ -229,7 +229,7 @@ unsigned int Qubits<T>::Measure(int qubit)
 
 	for(int i=0; i<numCoeffs; ++i)
 	{
-		Complex<T> coeff(states->get(i, 0).getRe(), states->get(i, 0).getIm());
+		Complex<Type> coeff(states->get(i, 0).getRe(), states->get(i, 0).getIm());
 
 		coeff /= factor;
 
@@ -241,10 +241,10 @@ unsigned int Qubits<T>::Measure(int qubit)
 
 /* Contol Gates */
 
-template<class T>
-Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
+template<class Type>
+Matrix<Type> Qubits<Type>::controlledU(int control, int target, Matrix<Type> u)
 {
-	Matrix<T> m1(1, 1), m2(1, 1), m00(2, 2), m11(2, 2);
+	Matrix<Type> m1(1, 1), m2(1, 1), m00(2, 2), m11(2, 2);
 
 	m1.setToI();
 	m2.setToI();
@@ -267,8 +267,8 @@ Matrix<T> Qubits<T>::controlledU(int control, int target, Matrix<T> u)
 	return m1 + m2;
 }
 
-template<class T>
-void Qubits<T>::CNOT(int control, int target)
+template<class Type>
+void Qubits<Type>::CNOT(int control, int target)
 {
 	if(enableGraphics)
 		graphics.add(control, target, "*", "@", graphics.TWO_QUBITS);
@@ -276,8 +276,8 @@ void Qubits<T>::CNOT(int control, int target)
 	(*states) = controlledU(control, target, gate.Pauli_X()) * (*states);
 }
 
-template<class T>
-void Qubits<T>::CY(int control, int target)
+template<class Type>
+void Qubits<Type>::CY(int control, int target)
 {
 	if(enableGraphics)
 		graphics.add(control, target, "*", "Y", graphics.TWO_QUBITS);
@@ -285,8 +285,8 @@ void Qubits<T>::CY(int control, int target)
 	(*states) = controlledU(control, target, gate.Pauli_Y()) * (*states);
 }
 
-template<class T>
-void Qubits<T>::CZ(int control, int target)
+template<class Type>
+void Qubits<Type>::CZ(int control, int target)
 {
 	if(enableGraphics)
 		graphics.add(control, target, "*", "Z", graphics.TWO_QUBITS);
@@ -294,8 +294,8 @@ void Qubits<T>::CZ(int control, int target)
 	(*states) = controlledU(control, target, gate.Pauli_Z()) * (*states);
 }
 
-template<class T>
-void Qubits<T>::Toffoli(int control1, int control2, int target)
+template<class Type>
+void Qubits<Type>::Toffoli(int control1, int control2, int target)
 {
 	if(enableGraphics)
 	{
@@ -313,7 +313,7 @@ void Qubits<T>::Toffoli(int control1, int control2, int target)
 		graphics.add(vecPos, vecGate, graphics.THREE_QUBITS);
 	}
 
-	Matrix<T> m1(1, 1), m2(1, 1), m3(1, 1), m4(1, 1), m00(2, 2), m11(2, 2);
+	Matrix<Type> m1(1, 1), m2(1, 1), m3(1, 1), m4(1, 1), m00(2, 2), m11(2, 2);
 
 	m1.setToI();
 	m2.setToI();
@@ -359,8 +359,8 @@ void Qubits<T>::Toffoli(int control1, int control2, int target)
 
 /* Other Multi-Qubit Gates */
 
-template<class T>
-void Qubits<T>::Swap(int qubit1, int qubit2)
+template<class Type>
+void Qubits<Type>::Swap(int qubit1, int qubit2)
 {
 	if(enableGraphics)
 		graphics.add(qubit1, qubit2, "x", "x", graphics.TWO_QUBITS);
@@ -373,28 +373,28 @@ void Qubits<T>::Swap(int qubit1, int qubit2)
 
 /* Utilities */
 
-template<class T>
-unsigned int Qubits<T>::size()
+template<class Type>
+unsigned int Qubits<Type>::size()
 {
 	// Reutrns the number of qubits the system contains.
 	return numQubits;
 }
 
-template<class T>
-unsigned int Qubits<T>::length()
+template<class Type>
+unsigned int Qubits<Type>::length()
 {
 	// Returns the number of coefficients representing the states.
 	return numCoeffs;
 }
 
-template<class T>
-void Qubits<T>::setRandomSeed(int seed)
+template<class Type>
+void Qubits<Type>::setRandomSeed(int seed)
 {
 	srand(seed);
 }
 
-template<class T>
-void Qubits<T>::print()
+template<class Type>
+void Qubits<Type>::print()
 {
 	for(int i=0; i<numCoeffs; ++i)
 	{
@@ -425,8 +425,8 @@ void Qubits<T>::print()
 	printf("\n");
 }
 
-template<class T>
-void Qubits<T>::save(string location)
+template<class Type>
+void Qubits<Type>::save(string location)
 {
 	FILE *file;
 	file = fopen(location.c_str(), "wt");
