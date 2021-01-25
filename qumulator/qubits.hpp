@@ -34,6 +34,8 @@ public:
 	void X(int);
 	void Y(int);
 	void Z(int);
+	void T(int);
+	void S(int);
 	unsigned int Measure(int);
 
 	Matrix<T> controlledU(int, int, Matrix<T>);
@@ -141,6 +143,36 @@ void Qubits<T>::Z(int qubit)
 
 	for(int i=numQubits - 1; i>=0; --i)
 		m = m.tensor((i == qubit)? gate.Pauli_Z() : gate.Identity());
+
+	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::T(int qubit)
+{
+	if(enableGraphics)
+		graphics.add(qubit, "T", graphics.SINGLE_QUBIT);
+
+	Matrix<T> m(1, 1);
+	m.setToI();
+
+	for(int i=numQubits - 1; i>=0; --i)
+		m = m.tensor((i == qubit)? gate.PhaseShift(M_PI / 4) : gate.Identity());
+
+	(*states) = m * (*states);
+}
+
+template<class T>
+void Qubits<T>::S(int qubit)
+{
+	if(enableGraphics)
+		graphics.add(qubit, "S", graphics.SINGLE_QUBIT);
+
+	Matrix<T> m(1, 1);
+	m.setToI();
+
+	for(int i=numQubits - 1; i>=0; --i)
+		m = m.tensor((i == qubit)? gate.PhaseShift(M_PI / 2) : gate.Identity());
 
 	(*states) = m * (*states);
 }

@@ -34,7 +34,7 @@ public:
 	Matrix<T> Pauli_Y() { return *pauli_y; }
 	Matrix<T> Pauli_Z() { return *pauli_z; }
 
-	Matrix<T> Phase() { return *phase; }
+	Matrix<T> PhaseShift(T);
 
 	/* Multi-Qubit Gates */
 	Matrix<T> CNOT() { return *cnot; }
@@ -93,11 +93,6 @@ void QuantumGates<T>::initialise()
 	pauli_z = new Matrix<T>(2, 2);
 	pauli_z->set(0, 0, c1);
 	pauli_z->set(1, 1, cn1);
-
-	// Phase
-	phase = new Matrix<T>(2, 2);
-	phase->set(0, 0, c1);
-	phase->set(1, 1, ci);
 }
 
 template<class T>
@@ -118,6 +113,17 @@ Matrix<T> QuantumGates<T>::Hadamard(int dimension)
 		return Hadamard(dimension / 2).tensor(Hadamard()) / cSqrt2;
 	else
 		return Hadamard();
+}
+
+template<class T>
+Matrix<T> QuantumGates<T>::PhaseShift(T radian)
+{
+	Matrix<T> m(2, 2);
+
+	m.set(0, 0, 1, 0);
+	m.set(1, 1, cos(radian), sin(radian));
+
+	return m;
 }
 
 #endif
