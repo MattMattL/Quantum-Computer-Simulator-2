@@ -44,10 +44,14 @@ private:
 		vector<gateType> options;
 	} logger;
 
-	vector<string> map;
+	vector<vector<string> > map;
 	bool *isClassical;
 
 	int numOfLines;
+
+	string QUANTUM_LINE;
+	string CLASSICAL_LINE;
+	string EMPTY_LINE;
 
 	void swap(int *num1, int *num2)
 	{
@@ -112,6 +116,10 @@ void QumulatorGraphics::initialise(int qubits)
 
 	for(int i=0; i<qubits; i++)
 		isClassical[i] = false;
+
+	CLASSICAL_LINE = "\u2550";
+	QUANTUM_LINE = "\u2500";
+	EMPTY_LINE = " ";
 }
 
 void QumulatorGraphics::add(int pos, char gate, gateType type)
@@ -178,7 +186,7 @@ void QumulatorGraphics::link(int ptr, int start, int end, char ch)
 {
 	for(int i=start; i<=end; i++)
 	{
-		if(map.at(i).at(ptr) != '-')
+		if(map.at(i).at(ptr) != QUANTUM_LINE)
 			map.at(i).at(ptr) = ch;
 	}
 }
@@ -196,11 +204,12 @@ void QumulatorGraphics::newLine(int n)
 	{
 		for(int j=0; j<numOfLines; j++)
 		{
-			map.at(j * 2) += (isClassical[j])? "=" : "-";
-			map.at(j * 2 + 1) += " ";
-		}	
+			string circuitLine = (isClassical[j])? CLASSICAL_LINE : QUANTUM_LINE;
+
+			map.at(j * 2).push_back(circuitLine);
+			map.at(j * 2 + 1).push_back(" ");
+		}
 	}
-	
 }
 
 void QumulatorGraphics::draw()
@@ -208,8 +217,13 @@ void QumulatorGraphics::draw()
 	// initialise map
 	for(int i=0; i<numOfLines; i++)
 	{
-		map.push_back("-");
-		map.push_back(" ");
+		vector<string> vecLine, vecSpace;
+
+		vecLine.push_back(QUANTUM_LINE);
+		vecSpace.push_back(EMPTY_LINE);
+
+		map.push_back(vecLine);
+		map.push_back(vecSpace);
 	}
 
 	newLine(2);
@@ -261,7 +275,7 @@ void QumulatorGraphics::draw()
 
 		// draw new lines for the next gate
 		bool isMultiQubitGate = currPos.size() > 1 || nextPos.size() > 1;
-		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != '-' && map.at(nextPos.at(0)).at(ptr) != '=';
+		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != QUANTUM_LINE && map.at(nextPos.at(0)).at(ptr) != CLASSICAL_LINE;
 		bool requiresSpace = option.at(i) == MARGIN;
 		bool isMeasuring = option.at(i) != MEASURE && option.at(i + 1) == MEASURE;
 		bool isLastGate = i >= logger.gate.size() - 2;
