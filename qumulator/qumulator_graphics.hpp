@@ -29,7 +29,6 @@ public:
 	void add(int, int, string, string, string, gateType);
 	void add(vector<int>, vector<string>, gateType);
 
-	// Deprecated
 	void newLine(int);
 
 	void draw();
@@ -54,44 +53,14 @@ private:
 	string EMPTY_LINE;
 	string VERTICAL_LINE;
 
-	void swap(int *num1, int *num2)
-	{
-		int temp = *num1;
-		*num1 = *num2;
-		*num2 = temp;
-	}
-
-	int max(int num1, int num2)
-	{
-		return (num1 > num2)? num1 : num2;
-	}
-	int min(int num1, int num2)
-	{
-		return (num1 < num2)? num1 : num2;
-	}
-
-	int max(vector<int> vec)
-	{
-		int num = vec.at(0);
-
-		for(int i=1; i<vec.size(); i++)
-			num = max(num, vec.at(i));
-
-		return num;
-	}
-
-	int min(vector<int> vec)
-	{
-		int num = vec.at(0);
-
-		for(int i=1; i<vec.size(); i++)
-			num = min(num, vec.at(i));
-
-		return num;
-	}
-
 	void link(int, int, int, string);
 	void fill(int, int, int, string);
+
+	void swap(int *num1, int *num2);
+	int max(int num1, int num2);
+	int min(int num1, int num2);
+	int max(vector<int> vec);
+	int min(vector<int> vec);
 };
 
 QumulatorGraphics::QumulatorGraphics()
@@ -318,6 +287,43 @@ void QumulatorGraphics::save(string location)
 	}
 	
 	file.close();
+}
+
+void QumulatorGraphics::swap(int *num1, int *num2)
+{
+	int temp = *num1;
+	*num1 = *num2;
+	*num2 = temp;
+}
+
+int QumulatorGraphics::max(int num1, int num2)
+{
+	return (num1 > num2)? num1 : num2;
+}
+
+int QumulatorGraphics::min(int num1, int num2)
+{
+	return (num1 < num2)? num1 : num2;
+}
+
+int QumulatorGraphics::max(vector<int> vec)
+{
+	int num = vec.at(0);
+
+	for(int i=1; i<vec.size(); i++)
+		num = max(num, vec.at(i));
+
+	return num;
+}
+
+int QumulatorGraphics::min(vector<int> vec)
+{
+	int num = vec.at(0);
+
+	for(int i=1; i<vec.size(); i++)
+		num = min(num, vec.at(i));
+
+	return num;
 }
 
 #endif
