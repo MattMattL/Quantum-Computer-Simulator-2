@@ -212,7 +212,7 @@ void QumulatorGraphics::draw()
 		vector<string> currGates = logger.gate.at(i);
 		vector<string> nextGates = logger.gate.at(i + 1);
 
-		// draw circuits on current line
+		// draw quantum gates on current line
 		switch(option.at(i))
 		{
 			case SINGLE_QUBIT:
@@ -244,7 +244,7 @@ void QumulatorGraphics::draw()
 				break;
 		}
 
-		// draw new lines for the next gate
+		// draw new lines if required
 		bool isMultiQubitGate = currPos.size() > 1 || nextPos.size() > 1;
 		bool gateOverlaps = map.at(nextPos.at(0)).at(ptr) != QUANTUM_LINE && map.at(nextPos.at(0)).at(ptr) != CLASSICAL_LINE;
 		bool requiresSpace = option.at(i) == MARGIN;
