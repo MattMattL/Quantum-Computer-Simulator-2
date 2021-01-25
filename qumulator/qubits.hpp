@@ -153,7 +153,7 @@ void Qubits<T>::Measure(int qubit)
 	T probability = (T)(rand() % 10000) / 10000;
 	unsigned int result;
 
-	for(int i=0; i<numCoeffs; i++)
+	for(int i=0; i<numCoeffs; ++i)
 	{
 		if(((i >> qubit) & 1) == 0)
 			probOfZero += states->get(i, 0).normSq();
@@ -162,7 +162,7 @@ void Qubits<T>::Measure(int qubit)
 	result = (probability <= probOfZero)? 0 : 1;
 
 	// remove unused states
-	for(int i=0; i<numCoeffs; i++)
+	for(int i=0; i<numCoeffs; ++i)
 	{
 		if(((i >> qubit) & 1) != result)
 			states->set(i, 0, 0, 0);
@@ -176,7 +176,7 @@ void Qubits<T>::Measure(int qubit)
 	else
 		factor.setRe(sqrt(probOfZero));
 
-	for(int i=0; i<numCoeffs; i++)
+	for(int i=0; i<numCoeffs; ++i)
 	{
 		Complex<T> coeff(states->get(i, 0).getRe(), states->get(i, 0).getIm());
 
@@ -347,11 +347,11 @@ void Qubits<T>::setRandomSeed(int seed)
 template<class T>
 void Qubits<T>::print()
 {
-	for(int i=0; i<numCoeffs; i++)
+	for(int i=0; i<numCoeffs; ++i)
 	{
 		string decToBin;
 
-		for(int j=0; j<numQubits; j++)
+		for(int j=0; j<numQubits; ++j)
 			decToBin.insert(decToBin.begin(), (i >> j & 1) + '0');
 
 		printf("|%s⟩", decToBin.c_str());
@@ -382,11 +382,11 @@ void Qubits<T>::save(string location)
 	FILE *file;
 	file = fopen(location.c_str(), "wt");
 
-	for(int i=0; i<numCoeffs; i++)
+	for(int i=0; i<numCoeffs; ++i)
 	{
 		string decToBin;
 
-		for(int j=0; j<numQubits; j++)
+		for(int j=0; j<numQubits; ++j)
 			decToBin.insert(decToBin.begin(), (i >> j & 1) + '0');
 
 		fprintf(file, "|%s⟩", decToBin.c_str());

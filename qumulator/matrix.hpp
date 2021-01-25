@@ -2,6 +2,7 @@
 #define QUMULATOR_MATRIX_HPP
 
 #include <vector>
+#include <memory.h>
 #include "complex.hpp"
 
 template<class T>
@@ -99,10 +100,10 @@ void Matrix<T>::initialise(int rows, int cols)
 	vector<Complex<T> > singleColumn;
 	Complex<T> c(0, 0);
 
-	for(int j=0; j<cols; j++)
+	for(int j=0; j<cols; ++j)
 		singleColumn.push_back(c);
 
-	for(int i=0; i<rows; i++)
+	for(int i=0; i<rows; ++i)
 		matrix.push_back(singleColumn);
 }
 
@@ -397,13 +398,12 @@ Matrix<T> Matrix<T>::tensor(Matrix<T> m)
 {
 	Matrix<T> result(rows() * m.rows(), cols() * m.cols());
 
-	for(int i=0; i<result.rows(); i++)
+	for(int i=0; i<result.rows(); ++i)
 	{
-		for(int j=0; j<result.cols(); j++)
+		for(int j=0; j<result.cols(); ++j)
 		{
 			result.set(i, j, 
-				get(i / m.rows(), j / m.cols()) *
-				m.get(i % m.rows(), j % m.cols()));
+				get(i / m.rows(), j / m.cols()) * m.get(i % m.rows(), j % m.cols()));
 		}
 	}
 
@@ -438,7 +438,7 @@ Complex<T>* Matrix<T>::ptr()
 	return &matrix.at(0).at(0);
 }
 
-// /* Debugging */
+/* Debugging */
 
 template<class T>
 void Matrix<T>::printRe()

@@ -142,15 +142,13 @@ Complex<T> Complex<T>::operator - (Complex c)
 template<class T>
 void Complex<T>::operator += (Complex c)
 {
-	setRe(getRe() + c.getRe());
-	setIm(getIm() + c.getIm());
+	set(getRe() + c.getRe(), getIm() + c.getIm());
 }
 
 template<class T>
 void Complex<T>::operator -= (Complex c)
 {
-	setRe(getRe() - c.getRe());
-	setIm(getIm() - c.getIm());
+	set(getRe() - c.getRe(), getIm() - c.getIm());
 }
 
 
@@ -167,8 +165,19 @@ Complex<T> Complex<T>::operator * (Complex c)
 {
 	Complex result;
 
-	result.setRe(getRe() * c.getRe() - getIm() * c.getIm());
-	result.setIm(getRe() * c.getIm() + getIm() * c.getRe());
+	if(c.getRe() == 0 && c.getIm() == 0)
+	{
+		result.set(0, 0);
+	}
+	else if(getIm() == 0 && c.getIm() == 0)
+	{
+		result.set(getRe() * c.getRe(), 0);
+	}
+	else
+	{
+		result.setRe(getRe() * c.getRe() - getIm() * c.getIm());
+		result.setIm(getRe() * c.getIm() + getIm() * c.getRe());
+	}
 
 	return result;
 }
