@@ -34,7 +34,7 @@ public:
 	void X(int);
 	void Y(int);
 	void Z(int);
-	void Measure(int);
+	unsigned int Measure(int);
 
 	Matrix<T> controlledU(int, int, Matrix<T>);
 	void CNOT(int, int);
@@ -146,8 +146,11 @@ void Qubits<T>::Z(int qubit)
 }
 
 template<class T>
-void Qubits<T>::Measure(int qubit)
+unsigned int Qubits<T>::Measure(int qubit)
 {
+	if(enableGraphics)
+		graphics.add(qubit, 'M', graphics.MEASURE);
+
 	// determine classical output
 	T probOfZero = 0;
 	T probability = (T)(rand() % 10000) / 10000;
@@ -185,9 +188,7 @@ void Qubits<T>::Measure(int qubit)
 		states->set(i, 0, coeff);
 	}
 
-	// add to circuit diagram
-	if(enableGraphics)
-		graphics.add(qubit, 'M', graphics.MEASURE);
+	return result;
 }
 
 /* Contol Gates */
