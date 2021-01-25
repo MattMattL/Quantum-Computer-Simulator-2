@@ -23,11 +23,11 @@ public:
 	~QumulatorGraphics();
 	void initialise(int);
 
-	void add(int, char, gateType);
-	void add(int, int, char, gateType);
-	void add(int, int, char, char, gateType);
-	void add(int, int, char, char, char, gateType);
-	void add(vector<int>, vector<char>, gateType);
+	void add(int, string, gateType);
+	void add(int, int, string, gateType);
+	void add(int, int, string, string, gateType);
+	void add(int, int, string, string, string, gateType);
+	void add(vector<int>, vector<string>, gateType);
 
 	// Deprecated
 	void newLine(int);
@@ -40,7 +40,7 @@ private:
 	struct logger
 	{
 		vector<vector<int> > pos;
-		vector<vector<char> > gate;
+		vector<vector<string> > gate;
 		vector<gateType> options;
 	} logger;
 
@@ -52,6 +52,7 @@ private:
 	string QUANTUM_LINE;
 	string CLASSICAL_LINE;
 	string EMPTY_LINE;
+	string VERTICAL_LINE;
 
 	void swap(int *num1, int *num2)
 	{
@@ -89,8 +90,8 @@ private:
 		return num;
 	}
 
-	void link(int, int, int, char);
-	void fill(int, int, int, char);
+	void link(int, int, int, string);
+	void fill(int, int, int, string);
 };
 
 QumulatorGraphics::QumulatorGraphics()
@@ -120,51 +121,52 @@ void QumulatorGraphics::initialise(int qubits)
 	CLASSICAL_LINE = "\u2550";
 	QUANTUM_LINE = "\u2500";
 	EMPTY_LINE = " ";
+	VERTICAL_LINE = "\u2502";
 }
 
-void QumulatorGraphics::add(int pos, char gate, gateType type)
+void QumulatorGraphics::add(int pos, string gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos);
 
-	vector<char> vecGate;
+	vector<string> vecGate;
 	vecGate.push_back(gate);
 
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate, gateType type)
+void QumulatorGraphics::add(int pos1, int pos2, string gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
 	vecPos.push_back(pos2);
 
-	vector<char> vecGate;
+	vector<string> vecGate;
 	vecGate.push_back(gate);
 
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, gateType type)
+void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
 	vecPos.push_back(pos2);
 
-	vector<char> vecGate;
+	vector<string> vecGate;
 	vecGate.push_back(gate1);
 	vecGate.push_back(gate2);
 
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, char gate3, gateType type)
+void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, string gate3, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
 	vecPos.push_back(pos2);
 
-	vector<char> vecGate;
+	vector<string> vecGate;
 	vecGate.push_back(gate1);
 	vecGate.push_back(gate2);
 	vecGate.push_back(gate3);
@@ -172,7 +174,7 @@ void QumulatorGraphics::add(int pos1, int pos2, char gate1, char gate2, char gat
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(vector<int> pos, vector<char> gates, gateType type)
+void QumulatorGraphics::add(vector<int> pos, vector<string> gates, gateType type)
 {
 	for(int i=0; i<pos.size(); i++)
 		pos.at(i) *= 2;
@@ -182,16 +184,16 @@ void QumulatorGraphics::add(vector<int> pos, vector<char> gates, gateType type)
 	logger.options.push_back(type);
 }
 
-void QumulatorGraphics::link(int ptr, int start, int end, char ch)
+void QumulatorGraphics::link(int ptr, int start, int end, string ch)
 {
 	for(int i=start; i<=end; i++)
 	{
-		if(map.at(i).at(ptr) != QUANTUM_LINE)
+		if(map.at(i).at(ptr) != QUANTUM_LINE && map.at(i).at(ptr) != CLASSICAL_LINE)
 			map.at(i).at(ptr) = ch;
 	}
 }
 
-void QumulatorGraphics::fill(int ptr, int start, int end, char ch)
+void QumulatorGraphics::fill(int ptr, int start, int end, string ch)
 {
 	for(int i=start; i<=end; i++)
 		map.at(i).at(ptr) = ch;
@@ -231,15 +233,15 @@ void QumulatorGraphics::draw()
 	// draw circuit diagram
 	int ptr = 2;
 
-	add(0, ' ', NULL_TYPE);
+	add(0, " ", NULL_TYPE);
 
 	for(int i=0; i<logger.gate.size() - 1; i++)
 	{
 		vector<gateType> option = logger.options;
 		vector<int> currPos = logger.pos.at(i);
 		vector<int> nextPos = logger.pos.at(i + 1);
-		vector<char> currGates = logger.gate.at(i);
-		vector<char> nextGates = logger.gate.at(i + 1);
+		vector<string> currGates = logger.gate.at(i);
+		vector<string> nextGates = logger.gate.at(i + 1);
 
 		// draw circuits on current line
 		switch(option.at(i))
@@ -251,14 +253,14 @@ void QumulatorGraphics::draw()
 
 			case TWO_QUBITS:
 				// isClassical[currPos.at(0) / 2] = false;
-				fill(ptr, min(currPos), max(currPos), '|');
+				fill(ptr, min(currPos), max(currPos), VERTICAL_LINE);
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
 				break;
 
 			case THREE_QUBITS:
 				// isClassical[currPos.at(0) / 2] = false;
-				fill(ptr, min(currPos), max(currPos), '|');
+				fill(ptr, min(currPos), max(currPos), VERTICAL_LINE);
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
 				map.at(currPos.at(2)).at(ptr) = currGates.at(2);

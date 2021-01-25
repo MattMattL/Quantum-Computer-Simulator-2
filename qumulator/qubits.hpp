@@ -89,7 +89,7 @@ template<class T>
 void Qubits<T>::H(int qubit)
 {
 	if(enableGraphics)
-		graphics.add(qubit, 'H', graphics.SINGLE_QUBIT);
+		graphics.add(qubit, "H", graphics.SINGLE_QUBIT);
 
 	Matrix<T> m(1, 1);
 	m.setToI();
@@ -104,7 +104,7 @@ template<class T>
 void Qubits<T>::X(int qubit)
 {
 	if(enableGraphics)
-		graphics.add(qubit, 'X', graphics.SINGLE_QUBIT);
+		graphics.add(qubit, "X", graphics.SINGLE_QUBIT);
 
 	Matrix<T> m(1, 1);
 	m.setToI();
@@ -119,7 +119,7 @@ template<class T>
 void Qubits<T>::Y(int qubit)
 {
 	if(enableGraphics)
-		graphics.add(qubit, 'Y', graphics.SINGLE_QUBIT);
+		graphics.add(qubit, "Y", graphics.SINGLE_QUBIT);
 
 	Matrix<T> m(1, 1);
 	m.setToI();
@@ -134,7 +134,7 @@ template<class T>
 void Qubits<T>::Z(int qubit)
 {
 	if(enableGraphics)
-		graphics.add(qubit, 'Z', graphics.SINGLE_QUBIT);
+		graphics.add(qubit, "Z", graphics.SINGLE_QUBIT);
 
 	Matrix<T> m(1, 1);
 	m.setToI();
@@ -149,7 +149,7 @@ template<class T>
 unsigned int Qubits<T>::Measure(int qubit)
 {
 	if(enableGraphics)
-		graphics.add(qubit, 'M', graphics.MEASURE);
+		graphics.add(qubit, "M", graphics.MEASURE);
 
 	// determine classical output
 	T probOfZero = 0;
@@ -223,7 +223,7 @@ template<class T>
 void Qubits<T>::CNOT(int control, int target)
 {
 	if(enableGraphics)
-		graphics.add(control, target, '*', '@', graphics.TWO_QUBITS);
+		graphics.add(control, target, "*", "@", graphics.TWO_QUBITS);
 
 	(*states) = controlledU(control, target, gate.Pauli_X()) * (*states);
 }
@@ -232,7 +232,7 @@ template<class T>
 void Qubits<T>::CY(int control, int target)
 {
 	if(enableGraphics)
-		graphics.add(control, target, '*', 'Y', graphics.TWO_QUBITS);
+		graphics.add(control, target, "*", "Y", graphics.TWO_QUBITS);
 
 	(*states) = controlledU(control, target, gate.Pauli_Y()) * (*states);
 }
@@ -241,7 +241,7 @@ template<class T>
 void Qubits<T>::CZ(int control, int target)
 {
 	if(enableGraphics)
-		graphics.add(control, target, '*', 'Z', graphics.TWO_QUBITS);
+		graphics.add(control, target, "*", "Z", graphics.TWO_QUBITS);
 
 	(*states) = controlledU(control, target, gate.Pauli_Z()) * (*states);
 }
@@ -256,11 +256,11 @@ void Qubits<T>::Toffoli(int control1, int control2, int target)
 		vecPos.push_back(control2);
 		vecPos.push_back(target);
 
-		vector<char> vecGate;
-		vecGate.push_back('*');
-		vecGate.push_back('*');
-		vecGate.push_back('@');
-		vecGate.push_back('|');
+		vector<string> vecGate;
+		vecGate.push_back("*");
+		vecGate.push_back("*");
+		vecGate.push_back("@");
+		vecGate.push_back("|");
 
 		graphics.add(vecPos, vecGate, graphics.THREE_QUBITS);
 	}
@@ -315,7 +315,7 @@ template<class T>
 void Qubits<T>::Swap(int q1, int q2)
 {
 	if(enableGraphics)
-		graphics.add(q1, q2, 'x', 'x', graphics.TWO_QUBITS);
+		graphics.add(q1, q2, "x", "x", graphics.TWO_QUBITS);
 
 	(*states) = controlledU(q1, q2, gate.Pauli_X()) *
 				controlledU(q2, q1, gate.Pauli_X()) *
