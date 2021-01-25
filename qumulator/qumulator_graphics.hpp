@@ -216,19 +216,19 @@ void QumulatorGraphics::draw()
 		switch(option.at(i))
 		{
 			case SINGLE_QUBIT:
-				isClassical[currPos.at(0) / 2] = false;
+				if(currGates.at(0) == "H")
+					isClassical[currPos.at(0) / 2] = false;
+
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				break;
 
 			case TWO_QUBITS:
-				// isClassical[currPos.at(0) / 2] = false;
 				fill(ptr, min(currPos), max(currPos), VERTICAL_LINE);
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
 				break;
 
 			case THREE_QUBITS:
-				// isClassical[currPos.at(0) / 2] = false;
 				fill(ptr, min(currPos), max(currPos), VERTICAL_LINE);
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				map.at(currPos.at(1)).at(ptr) = currGates.at(1);
