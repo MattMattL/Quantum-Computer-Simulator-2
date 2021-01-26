@@ -47,6 +47,10 @@ public:
 
 	void Swap(int, int);
 
+	/* Graphics */
+	void margin();
+	void barrier();
+
 	/* Utilities */
 	unsigned int size();
 	unsigned int length();
@@ -371,12 +375,28 @@ void Qubits<Type>::Swap(int qubit1, int qubit2)
 				(*states);
 }
 
+/* Graphics */
+
+template<class Type>
+void Qubits<Type>::margin()
+{
+	if(enableGraphics)
+		graphics.add(graphics.MARGIN);
+}
+
+template<class Type>
+void Qubits<Type>::barrier()
+{
+	if(enableGraphics)
+		graphics.add(0, 0, "NULL", graphics.BARRIER);
+}
+
 /* Utilities */
 
 template<class Type>
 unsigned int Qubits<Type>::size()
 {
-	// Reutrns the number of qubits the system contains.
+	// Reutrns the number of qubits in the system.
 	return numQubits;
 }
 

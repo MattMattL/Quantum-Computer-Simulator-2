@@ -12,6 +12,7 @@ public:
 	{
 		NULL_TYPE = 0,
 		MARGIN = 10,
+		BARRIER = 11,
 		SINGLE_QUBIT = 100,
 		TWO_QUBITS = 200,
 		THREE_QUBITS = 300,
@@ -23,6 +24,7 @@ public:
 	~QumulatorGraphics();
 	void initialise(int);
 
+	void add(gateType);
 	void add(int, string, gateType);
 	void add(int, int, string, gateType);
 	void add(int, int, string, string, gateType);
@@ -93,6 +95,17 @@ void QumulatorGraphics::initialise(int qubits)
 	VERTICAL_LINE = "\u2502";
 }
 
+void QumulatorGraphics::add(gateType type)
+{
+	vector<int> vecPos;
+	vecPos.push_back(0);
+
+	vector<string> vecGate;
+	vecGate.push_back("NULL");
+
+	add(vecPos, vecGate, type);
+}
+
 void QumulatorGraphics::add(int pos, string gate, gateType type)
 {
 	vector<int> vecPos;
@@ -155,7 +168,7 @@ void QumulatorGraphics::add(vector<int> pos, vector<string> gates, gateType type
 
 void QumulatorGraphics::link(int ptr, int start, int end, string ch)
 {
-	for(int i=start; i<=end; i++)
+	for(int i=start; i<end; i++)
 	{
 		if(map.at(i).at(ptr) != QUANTUM_LINE && map.at(i).at(ptr) != CLASSICAL_LINE)
 			map.at(i).at(ptr) = ch;
@@ -164,7 +177,7 @@ void QumulatorGraphics::link(int ptr, int start, int end, string ch)
 
 void QumulatorGraphics::fill(int ptr, int start, int end, string ch)
 {
-	for(int i=start; i<=end; i++)
+	for(int i=start; i<end; i++)
 		map.at(i).at(ptr) = ch;
 }
 
@@ -198,10 +211,9 @@ void QumulatorGraphics::draw()
 	}
 
 	newLine(2);
-
-	// draw circuit diagram
 	int ptr = 2;
 
+	// draw circuit diagram
 	add(0, " ", NULL_TYPE);
 
 	for(int i=0; i<logger.gate.size() - 1; i++)
@@ -212,7 +224,7 @@ void QumulatorGraphics::draw()
 		vector<string> currGates = logger.gate.at(i);
 		vector<string> nextGates = logger.gate.at(i + 1);
 
-		// draw quantum gates on current line
+		// draw gates on current line
 		switch(option.at(i))
 		{
 			case SINGLE_QUBIT:
@@ -240,6 +252,10 @@ void QumulatorGraphics::draw()
 				map.at(currPos.at(0)).at(ptr) = currGates.at(0);
 				break;
 
+			case BARRIER:
+				fill(ptr, 0, numOfLines * 2 - 1, "\u250A");
+				break;
+
 			default:
 				break;
 		}
@@ -253,10 +269,15 @@ void QumulatorGraphics::draw()
 
 		if(isMultiQubitGate || gateOverlaps || requiresSpace || isMeasuring)
 		{
-			if(!isLastGate)
+			if(requiresSpace)
+			{
+				newLine(1);
+				ptr += 1;
+			}
+			else if(!isLastGate)
 			{
 				newLine(3);
-				ptr += 3;	
+				ptr += 3;
 			}
 		}
 	}
