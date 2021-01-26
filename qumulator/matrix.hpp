@@ -45,6 +45,8 @@ public:
 	/* Matrix Manipulation */
 	void setToI();
 	void transpose();
+	void conjugate();
+	void dagger();
 
 	/* Arithmetic Operations */
 	void operator = (Matrix);
@@ -206,13 +208,35 @@ void Matrix<T>::transpose()
 	{
 		for(int j=i+1; j<cols(); ++j)
 		{
-			Complex<T> temp;
+			Complex<T> c;
 
-			temp = get(i, j);
+			c = get(i, j);
 			set(i, j, get(j, i));
-			set(j, i, temp);
+			set(j, i, c);
 		}
 	}
+}
+
+template<class T>
+void Matrix<T>::conjugate()
+{
+	for(int i=0; i<rows(); ++i)
+	{
+		for(int j=0; j<cols(); ++j)
+		{
+			Complex<T> c;
+
+			c = get(i, j);
+			set(i, j, c.getRe(), -c.getIm());
+		}
+	}
+}
+
+template<class T>
+void Matrix<T>::dagger()
+{
+	transpose();
+	conjugate();
 }
 
 /* Arithmetic Operations */
