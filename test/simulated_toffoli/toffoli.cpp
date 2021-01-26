@@ -1,6 +1,6 @@
 /*
 	Testing single and multi-qubit gates by implementing Toffoli gate
-	using no more than double-qubit gates and comparing the result.
+	using no more than double-qubit gates.
 */
 
 #include <iostream>
