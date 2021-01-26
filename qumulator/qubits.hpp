@@ -441,8 +441,6 @@ void Qubits<Type>::print()
 		printf("Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
 		temp.pop();
 	}
-
-	printf("\n");
 }
 
 template<class Type>
@@ -471,8 +469,6 @@ void Qubits<Type>::save(string location)
 		fprintf(file, "Qubit%2d: %d\n", temp.top(), (measurement >> temp.top()) & 1);
 		temp.pop();
 	}
-
-	fprintf(file, "\n");
 
 	fclose(file);
 }
