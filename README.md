@@ -1,17 +1,16 @@
-# Qumulator V2
+## Qumulator V2
 
-## About This Repository
+### About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
 
+### Current Plan
 I'm currently adding more libraries to implement a working quantum computer simulator:
 
 _Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm_
 
-
 ## Code
 
 ### Initialisation
-
 ```C++
 #include "Qumulator.hpp"
 
@@ -20,7 +19,6 @@ Qubits<float> qubit(1); // 1 qubit of type float
 ```
 
 ### Quantum Logic Gates
-
 ```C++
 Qubits<double> qubits(3);
 
@@ -48,7 +46,6 @@ qubits.Measure(2);
 ```
 
 ### Visualisation Library
-
 ```C++
 Qubits<double> qubits(2);
 
@@ -66,7 +63,6 @@ qubits.graphics.save("./name.txt");
 ```
 
 ### Matrices and Complex Numbers
-
 ```C++
 Matrix<double> m1(2, 2); // Initialise a 2 x 2 matrix and set the first entry to 1 - i
 m1.set(0, 0, 1, -1);
