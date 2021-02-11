@@ -23,13 +23,13 @@ Qubits<float> qubit(1); // 1 qubit of type float
 ### Quantum Logic Gates
 
 ```C++
-qubits.H(0); // Hadamard (on N-th qubit)
+qubits.H(0);
 
-qubits.X(0); // Pauli-X,Y,Z
+qubits.X(0);
 qubits.Y(0);
 qubits.Z(0);
 
-qubits.T(0); // Phase
+qubits.T(0); // phase
 qubits.S(0);
 
 qubits.U(0); // arbitrary unitary matrix
@@ -51,35 +51,44 @@ qubits.Measure(2);
 ```C++
 Qubits<double> qubits(2);
 
-qubits.enableGraphics = true // enabled by default
+qubits.enableGraphics = true;
 
-// add gates here
+// ADD CODE HERE
 
-qubits.margin(); // put extra space
-qubits.barrier(); // draw a barrier
+qubits.margin();
+qubits.barrier();
 
-qubits.graphics.draw(); // create circuit diagram
-qubits.graphics.print(); // print on screen
-qubits.graphics.save("./name.txt"); // save as file
+// draw the diagram
+qubits.graphics.draw();
+
+// print on screen / save as file
+qubits.graphics.print();
+qubits.graphics.save("./name.txt");
 ```
 
 ### Matrices and Complex Numbers
 
 ```C++
-Matrix<double> m1(2, 2), m2(2, 2); // 2 x 2 matrices of type double
-m1.set(0, 0, 1, -1); // set entry (0, 0) to 1 - i
+// Initialise a 2 x 2 matrix and set the first entry to 1 - i
+Matrix<double> m1(2, 2);
+m1.set(0, 0, 1, -1);
 
-Complex<double> c1(1, 2); // declaring 1 + 2i
-m1.set(1, 1, c); // set entry (1, 1) to 1 + 2i
+// Set c1 = 1 + 2i and copy to the last entry of m1
+Complex<double> c1(1, 2);
+m1.set(1, 1, c);
 
-m2 = m1 * m2; // arithmetic operations (+, -, *, /)
+// arithmetic operations (+, -, *, /)
+Matrix<double> m2(2, 2);
+m2 = m1 * m2; 
 m2 *= m2
 c = 2 * c;
 c *= c
 
-m2 = m1.tensor(m2) // tensor product
+// tensor product
+m2 = m1.tensor(m2)
 
-m.transpose(); // matrix manipulations
+// matrix manipulations
+m.transpose(); 
 m.conjugate();
 m.dagger();
 ```
@@ -87,8 +96,8 @@ m.dagger();
 ### Example Code
 ```C++
 /*
- *	Implementing super dense coding using qumulator library:
- *	transfering two classical bit worth of information using one qubit.
+ *	Implementing super dense coding using Qumulator library:
+ *	transfering two classical bit worth of information with one qubit.
  */
 #include "Qumulator.hpp"
 
