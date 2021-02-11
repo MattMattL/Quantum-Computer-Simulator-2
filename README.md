@@ -18,7 +18,7 @@ _Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates ->
 
 ### Initialisation
 
-'''C++
+'''c++
 #include"Qumulator.hpp"
 
 Qubits<double> qubits(3); // 3 qubits of type double
@@ -27,7 +27,7 @@ Qubits<float> qubit(1); // 1 qubit of type float
 
 ### Quantum Logic Gates
 
-'''C++
+'''c++
 Qubits<double> qubits(3);
 
 qubits.H(0); // Hadamard (on N-th qubit)
