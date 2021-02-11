@@ -86,7 +86,7 @@ m.dagger();
 ### Example Code
 ```C++
 /*
-    Implementing Super Dense Coding using Qumulator Library
+    Implementing Super Dense Coding with Qumulator Library
 
     This code demonstrates how one qubit can "carry" two classical bit worth of
     information by entangling two qubits and changing the state of the first qubit.
