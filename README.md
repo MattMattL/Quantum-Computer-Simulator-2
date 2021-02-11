@@ -53,7 +53,7 @@ qubits.enableGraphics = true;
 
 // ADD CODE HERE
 
-qubits.margin();
+qubits.margin(); // handling spacing
 qubits.barrier();
 
 qubits.graphics.draw(); // create diagram
@@ -64,19 +64,19 @@ qubits.graphics.save("./name.txt");
 
 ### Matrices and Complex Numbers
 ```C++
-Matrix<double> m1(2, 2); // Initialise a 2 x 2 matrix and set the first entry to 1 - i
+Matrix<double> m1(2, 2); // initialise a 2 x 2 matrix and set the first entry to 1 - i
 m1.set(0, 0, 1, -1);
 
-Complex<double> c1(1, 2); // Set c1 = 1 + 2i and copy to the last entry of m1
+Complex<double> c1(1, 2); // initialise c1 = 1 + 2i and copy to the last entry of m1
 m1.set(1, 1, c);
 
 Matrix<double> m2(2, 2); // arithmetic operations (+, -, *, /)
 m2 = m1 * m2; 
-m2 *= m2
-c = 2 * c;
-c *= c
+m2 += m2;
+c = c / 2;
+c -= c;
 
-m2 = m1.tensor(m2) // tensor product
+m2 = m1.tensor(m2); // tensor product
 
 m.transpose(); // matrix manipulations
 m.conjugate();
@@ -141,19 +141,3 @@ Circuit Diagram:
      │     │         
 ─────@─────@─────M═══
 ```
-
-### Level 3 Text
-text text text
-text text text
-
-#### Level 4 Text
-text text text
-text text text
-
-##### Level 5 Text
-text text text
-text text text
-
-###### Level 6 Text
-text text text
-text text text
