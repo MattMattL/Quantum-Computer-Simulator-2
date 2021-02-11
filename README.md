@@ -93,7 +93,7 @@ m.dagger();
 
     Measuring both qubits leaves the qubits in one of the four possible states
     depending on the gate applied to the first qubit.
- */
+*/
 
 #include "Qumulator.hpp"
 
