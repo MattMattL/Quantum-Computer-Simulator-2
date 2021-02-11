@@ -3,9 +3,7 @@
 ## About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
 
-
 I'm currently adding more libraries to implement a working quantum computer simulator:
-
 _Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm_
 
 
@@ -23,7 +21,9 @@ Qubits<float> qubit(1); // 1 qubit of type float
 ### Quantum Logic Gates
 
 ```C++
-qubits.H(0);
+Qubits<double> qubits(3);
+
+qubits.H(0); // Hadamard on first qubit
 
 qubits.X(0);
 qubits.Y(0);
@@ -34,10 +34,10 @@ qubits.S(0);
 
 qubits.U(0); // arbitrary unitary matrix
 
-qubits.CNOT(0, 1);
+qubits.CNOT(0, 1); // (control, target)
 qubits.CY(0, 1);
 qubits.CZ(0, 1);
-qubits.Toffoli(0, 1, 2);
+qubits.Toffoli(0, 1, 2); // (control, control, target)
 
 qubits.Swap(0, 1);
 
@@ -58,9 +58,9 @@ qubits.enableGraphics = true;
 qubits.margin();
 qubits.barrier();
 
-qubits.graphics.draw(); // draw the diagram
+qubits.graphics.draw(); // create diagram
 
-qubits.graphics.print(); // print and save
+qubits.graphics.print();
 qubits.graphics.save("./name.txt");
 ```
 
@@ -130,10 +130,6 @@ Result:
 |01⟩ =  0               (0.000)
 |10⟩ =  1.000 + 0.000i  (1.000)
 |11⟩ =  0               (0.000)
-
-──H──*──U──*──H──M═══
-     │     │         
-─────@─────@─────M═══
 ```
 
 Circuit Diagram:
