@@ -58,37 +58,30 @@ qubits.enableGraphics = true;
 qubits.margin();
 qubits.barrier();
 
-// draw the diagram
-qubits.graphics.draw();
+qubits.graphics.draw(); // draw the diagram
 
-// print on screen / save as file
-qubits.graphics.print();
+qubits.graphics.print(); // print and save
 qubits.graphics.save("./name.txt");
 ```
 
 ### Matrices and Complex Numbers
 
 ```C++
-// Initialise a 2 x 2 matrix and set the first entry to 1 - i
-Matrix<double> m1(2, 2);
+Matrix<double> m1(2, 2); // Initialise a 2 x 2 matrix and set the first entry to 1 - i
 m1.set(0, 0, 1, -1);
 
-// Set c1 = 1 + 2i and copy to the last entry of m1
-Complex<double> c1(1, 2);
+Complex<double> c1(1, 2); // Set c1 = 1 + 2i and copy to the last entry of m1
 m1.set(1, 1, c);
 
-// arithmetic operations (+, -, *, /)
-Matrix<double> m2(2, 2);
+Matrix<double> m2(2, 2); // arithmetic operations (+, -, *, /)
 m2 = m1 * m2; 
 m2 *= m2
 c = 2 * c;
 c *= c
 
-// tensor product
-m2 = m1.tensor(m2)
+m2 = m1.tensor(m2) // tensor product
 
-// matrix manipulations
-m.transpose(); 
+m.transpose(); // matrix manipulations
 m.conjugate();
 m.dagger();
 ```
