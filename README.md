@@ -4,6 +4,7 @@
 This is the second version of my original quantum computer simulator, Qumulator (2019).
 
 I'm currently adding more libraries to implement a working quantum computer simulator:
+
 _Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm_
 
 
