@@ -6,7 +6,7 @@ This is the second version of my original quantum computer simulator, Qumulator 
 ### Current Plan
 I'm currently adding more libraries to implement a working quantum computer simulator:
 
-_Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm_
+Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm
 
 ## Code
 
