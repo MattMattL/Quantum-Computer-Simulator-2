@@ -18,7 +18,7 @@ Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> 
 
 ### Initialisation
 ```C++
-#include "Qumulator.hpp"
+#include "Qmulator.hpp"
 
 Qubits<double> qubits(3); // 3 qubits of type double
 Qubits<float> qubit(1); // 1 qubit of type float	
@@ -92,7 +92,7 @@ m.dagger();
 ### Example Code
 ```C++
 /*
-    Implementing Super Dense Coding with Qumulator Library
+    Implementing Super Dense Coding with Qmulator Library
 
     This code demonstrates how one qubit can "carry" two classical bit worth of
     information by entangling two qubits and changing the state of the first qubit.
@@ -101,7 +101,7 @@ m.dagger();
     depending on the gate applied to the first qubit.
 */
 
-#include "Qumulator.hpp"
+#include "Qmulator.hpp"
 
 int main()
 {
