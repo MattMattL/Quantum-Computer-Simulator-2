@@ -1,4 +1,4 @@
-## Q-mulator
+## Q-mulator V2
 
 I recently changed the title of this project as no one around me was able to pronounce it correctly
 
