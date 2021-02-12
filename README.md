@@ -97,8 +97,8 @@ m.dagger();
     This code demonstrates how one qubit can "carry" two classical bit worth of
     information by entangling two qubits and changing the state of the first qubit.
 
-    Measuring both qubits leaves the qubits in one of the four possible states
-    depending on the gate applied to the first qubit.
+    Measuring both qubits leaves the quantum system in one of the four possible
+    states depending on the gate applied to the first qubit.
 */
 
 #include "Qmulator.hpp"
