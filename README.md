@@ -125,15 +125,15 @@ int main()
 	qubits.Measure(0);
 	qubits.Measure(1);
 
-	qubits.print();
+	qubits.save("./result.txt");
 	qubits.graphics.draw();
-	qubits.graphics.print();
+	qubits.graphics.save("./circuit.txt");
 
 	return 0;
 }
 ```
 
-Result:
+result.txt:
 ```
 |00⟩ =  0               (0.000)
 |01⟩ =  0               (0.000)
@@ -141,7 +141,7 @@ Result:
 |11⟩ =  0               (0.000)
 ```
 
-Circuit Diagram:
+circuit.txt:
 ```
 ──H──*──U──*──H──M═══
      │     │         
