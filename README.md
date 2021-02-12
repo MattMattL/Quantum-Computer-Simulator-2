@@ -26,8 +26,6 @@ Qubits<float> qubit(1); // 1 qubit of type float
 
 ### Quantum Logic Gates
 ```C++
-Qubits<double> qubits(3);
-
 qubits.H(0); // Hadamard on first qubit
 
 qubits.X(0);
@@ -53,8 +51,6 @@ qubits.Measure(2);
 
 ### Visualisation Library
 ```C++
-Qubits<double> qubits(2);
-
 qubits.enableGraphics = true;
 
 // ADD CODE HERE
