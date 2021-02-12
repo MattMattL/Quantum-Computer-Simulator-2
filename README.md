@@ -4,7 +4,7 @@ I recently changed the title of this project as no one around me was able to pro
 
 (quantum + emulator = qumulator, as in "cute", BrE: /ˈkjuːmjʊleɪtə/, AmE: /kjúːmjulèitər/).
 
-I'm not 100% satisfied by the new name so it may change again in the future.
+I'm not 100% satisfied by the new name, so please somehow let me know if you have any brilliant suggestion.
 
 ### About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
