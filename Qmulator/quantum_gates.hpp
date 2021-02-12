@@ -1,5 +1,5 @@
-#ifndef QUMULATOR_QUAMTUM_GATES_HPP
-#define QUMULATOR_QUAMTUM_GATES_HPP
+#ifndef QMULATOR_QUAMTUM_GATES_HPP
+#define QMULATOR_QUAMTUM_GATES_HPP
 
 #include <cmath>
 #include "complex.hpp"
