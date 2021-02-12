@@ -1,5 +1,5 @@
-#ifndef QUMULATOR_MATRIX_HPP
-#define QUMULATOR_MATRIX_HPP
+#ifndef QMULATOR_MATRIX_HPP
+#define QMULATOR_MATRIX_HPP
 
 #include <vector>
 #include <memory.h>

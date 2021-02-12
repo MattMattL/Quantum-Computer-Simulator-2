@@ -1,11 +1,11 @@
-#ifndef QUMULATOR_GRAPHICS_HPP
-#define QUMULATOR_GRAPHICS_HPP
+#ifndef QMULATOR_GRAPHICS_HPP
+#define QMULATOR_GRAPHICS_HPP
 
 #include <fstream>
 #include <vector>
 #include <string>
 
-class QumulatorGraphics
+class QmulatorGraphics
 {
 public:
 	enum gateType: int
@@ -19,9 +19,9 @@ public:
 		MEASURE = 400,
 	};
 
-	QumulatorGraphics();
-	QumulatorGraphics(int);
-	~QumulatorGraphics();
+	QmulatorGraphics();
+	QmulatorGraphics(int);
+	~QmulatorGraphics();
 	void initialise(int);
 
 	void add(gateType);
@@ -65,22 +65,22 @@ private:
 	int min(vector<int> vec);
 };
 
-QumulatorGraphics::QumulatorGraphics()
+QmulatorGraphics::QmulatorGraphics()
 {
 
 }
 
-QumulatorGraphics::QumulatorGraphics(int qubits)
+QmulatorGraphics::QmulatorGraphics(int qubits)
 {
 	initialise(qubits);
 }
 
-QumulatorGraphics::~QumulatorGraphics()
+QmulatorGraphics::~QmulatorGraphics()
 {
 	delete[] isClassical;
 }
 
-void QumulatorGraphics::initialise(int qubits)
+void QmulatorGraphics::initialise(int qubits)
 {
 	numOfLines = qubits;
 
@@ -95,7 +95,7 @@ void QumulatorGraphics::initialise(int qubits)
 	VERTICAL_LINE = "\u2502";
 }
 
-void QumulatorGraphics::add(gateType type)
+void QmulatorGraphics::add(gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(0);
@@ -106,7 +106,7 @@ void QumulatorGraphics::add(gateType type)
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos, string gate, gateType type)
+void QmulatorGraphics::add(int pos, string gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos);
@@ -117,7 +117,7 @@ void QumulatorGraphics::add(int pos, string gate, gateType type)
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, string gate, gateType type)
+void QmulatorGraphics::add(int pos1, int pos2, string gate, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -129,7 +129,7 @@ void QumulatorGraphics::add(int pos1, int pos2, string gate, gateType type)
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, gateType type)
+void QmulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -142,7 +142,7 @@ void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, gate
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, string gate3, gateType type)
+void QmulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, string gate3, gateType type)
 {
 	vector<int> vecPos;
 	vecPos.push_back(pos1);
@@ -156,7 +156,7 @@ void QumulatorGraphics::add(int pos1, int pos2, string gate1, string gate2, stri
 	add(vecPos, vecGate, type);
 }
 
-void QumulatorGraphics::add(vector<int> pos, vector<string> gates, gateType type)
+void QmulatorGraphics::add(vector<int> pos, vector<string> gates, gateType type)
 {
 	for(int i=0; i<pos.size(); i++)
 		pos.at(i) *= 2;
@@ -166,7 +166,7 @@ void QumulatorGraphics::add(vector<int> pos, vector<string> gates, gateType type
 	logger.options.push_back(type);
 }
 
-void QumulatorGraphics::link(int ptr, int start, int end, string ch)
+void QmulatorGraphics::link(int ptr, int start, int end, string ch)
 {
 	for(int i=start; i<end; i++)
 	{
@@ -175,14 +175,14 @@ void QumulatorGraphics::link(int ptr, int start, int end, string ch)
 	}
 }
 
-void QumulatorGraphics::fill(int ptr, int start, int end, string ch)
+void QmulatorGraphics::fill(int ptr, int start, int end, string ch)
 {
 	for(int i=start; i<end; i++)
 		map.at(i).at(ptr) = ch;
 }
 
 // Deprecated
-void QumulatorGraphics::newLine(int n)
+void QmulatorGraphics::newLine(int n)
 {
 	for(int i=0; i<n; i++)
 	{
@@ -196,7 +196,7 @@ void QumulatorGraphics::newLine(int n)
 	}
 }
 
-void QumulatorGraphics::draw()
+void QmulatorGraphics::draw()
 {
 	// initialise map
 	for(int i=0; i<numOfLines; i++)
@@ -285,7 +285,7 @@ void QumulatorGraphics::draw()
 	newLine(3);
 }
 
-void QumulatorGraphics::print()
+void QmulatorGraphics::print()
 {
 	for(int i=0; i<map.size(); i++)
 	{
@@ -295,7 +295,7 @@ void QumulatorGraphics::print()
 	}
 }
 
-void QumulatorGraphics::save(string location)
+void QmulatorGraphics::save(string location)
 {
 	ofstream file;
 	file.open(location, ofstream::trunc);
@@ -310,24 +310,24 @@ void QumulatorGraphics::save(string location)
 	file.close();
 }
 
-void QumulatorGraphics::swap(int *num1, int *num2)
+void QmulatorGraphics::swap(int *num1, int *num2)
 {
 	int temp = *num1;
 	*num1 = *num2;
 	*num2 = temp;
 }
 
-int QumulatorGraphics::max(int num1, int num2)
+int QmulatorGraphics::max(int num1, int num2)
 {
 	return (num1 > num2)? num1 : num2;
 }
 
-int QumulatorGraphics::min(int num1, int num2)
+int QmulatorGraphics::min(int num1, int num2)
 {
 	return (num1 < num2)? num1 : num2;
 }
 
-int QumulatorGraphics::max(vector<int> vec)
+int QmulatorGraphics::max(vector<int> vec)
 {
 	int num = vec.at(0);
 
@@ -337,7 +337,7 @@ int QumulatorGraphics::max(vector<int> vec)
 	return num;
 }
 
-int QumulatorGraphics::min(vector<int> vec)
+int QmulatorGraphics::min(vector<int> vec)
 {
 	int num = vec.at(0);
 

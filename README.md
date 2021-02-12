@@ -1,4 +1,10 @@
-## Qumulator V2
+## Q-mulator V2
+
+I recently changed the title of this project as no one around me was able to pronounce it correctly
+
+(quantum + emulator = qumulator, as in "cute", BrE: /ˈkjuːmjʊleɪtə/, AmE: /kjúːmjulèitər/).
+
+I'm not 100% satisfied by the new name, so please somehow let me know if you have any brilliant suggestion.
 
 ### About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
@@ -12,7 +18,7 @@ Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> 
 
 ### Initialisation
 ```C++
-#include "Qumulator.hpp"
+#include "Qmulator.hpp"
 
 Qubits<double> qubits(3); // 3 qubits of type double
 Qubits<float> qubit(1); // 1 qubit of type float	
@@ -86,7 +92,7 @@ m.dagger();
 ### Example Code
 ```C++
 /*
-    Implementing Super Dense Coding with Qumulator Library
+    Implementing Super Dense Coding with Qmulator Library
 
     This code demonstrates how one qubit can "carry" two classical bit worth of
     information by entangling two qubits and changing the state of the first qubit.
@@ -95,7 +101,7 @@ m.dagger();
     depending on the gate applied to the first qubit.
 */
 
-#include "Qumulator.hpp"
+#include "Qmulator.hpp"
 
 int main()
 {
@@ -119,15 +125,15 @@ int main()
 	qubits.Measure(0);
 	qubits.Measure(1);
 
-	qubits.print();
+	qubits.save("./result.txt");
 	qubits.graphics.draw();
-	qubits.graphics.print();
+	qubits.graphics.save("./circuit.txt");
 
 	return 0;
 }
 ```
 
-Result:
+result.txt:
 ```
 |00⟩ =  0               (0.000)
 |01⟩ =  0               (0.000)
@@ -135,7 +141,7 @@ Result:
 |11⟩ =  0               (0.000)
 ```
 
-Circuit Diagram:
+circuit.txt:
 ```
 ──H──*──U──*──H──M═══
      │     │         

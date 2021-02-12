@@ -1,5 +1,5 @@
-#ifndef QUMULATOR_QUBITS_HPP
-#define QUMULATOR_QUBITS_HPP
+#ifndef QMULATOR_QUBITS_HPP
+#define QMULATOR_QUBITS_HPP
 
 #include <stdio.h>
 #include <queue>
@@ -7,7 +7,7 @@
 #include "complex.hpp"
 #include "matrix.hpp"
 #include "quantum_gates.hpp"
-#include "qumulator_graphics.hpp"
+#include "qmulator_graphics.hpp"
 
 template<class Type>
 class Qubits
@@ -61,7 +61,7 @@ public:
 	void save(string);
 
 	/* Circuit Diagram */
-	QumulatorGraphics graphics;
+	QmulatorGraphics graphics;
 	bool enableGraphics;
 };
 
