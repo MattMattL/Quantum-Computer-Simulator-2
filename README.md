@@ -1,10 +1,9 @@
 ## Q-mulator V2
 
-I recently changed the title of this project as no one around me was able to pronounce it correctly
+I recently changed the title of this project.
 
-(quantum + emulator = qumulator, as in "cute", BrE: /ˈkjuːmjʊleɪtə/, AmE: /kjúːmjulèitər/).
-
-I'm not 100% satisfied by the new name, so please somehow let me know if you have any brilliant suggestion.
+How To Pronounce:
+quantum + emulator = qumulator (as in "cumulate") BrE: /ˈkjuːmjʊleɪtə/, AmE: /kjúːmjulèitər/).
 
 ### About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
