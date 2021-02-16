@@ -76,9 +76,9 @@ c -= c;
 
 m2 = m1.tensor(m2); // tensor product
 
-m.transpose(); // matrix manipulations
-m.conjugate();
-m.dagger();
+m1.transpose(); // matrix manipulations
+m1.conjugate();
+m1.dagger();
 ```
 
 ### Example Code
