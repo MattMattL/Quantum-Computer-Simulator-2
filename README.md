@@ -6,7 +6,7 @@ I recently changed the title of this project (/ˈkjuːmjʊleɪtə/ or /kjúːmju
 This is the second version of my original quantum computer simulator, Qumulator (2019).
 
 ### Current Plan
-I'm currently writing more header files to implement a working quantum computer simulator:
+I'm currently writing more header files to implement an elementary quantum computer simulator:
 
 Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm
 
