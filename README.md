@@ -6,7 +6,7 @@ I recently changed the title of this project (/ˈkjuːmjʊleɪtə/ or /kjúːmju
 This is the second version of my original quantum computer simulator, Qumulator (2019).
 
 ### Current Plan
-I'm currently writing more header files to implement an elementary quantum computer simulator:
+I'm currently writing more header files to implement an elementary level quantum computer simulator:
 
 Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm
 
@@ -22,7 +22,7 @@ Qubits<float> qubit(1); // 1 qubit of type float
 
 ### Quantum Logic Gates
 ```C++
-qubits.H(0); // Hadamard on first qubit
+qubits.H(0); // Hadamard on the first qubit
 
 qubits.X(0);
 qubits.Y(0);
@@ -31,7 +31,7 @@ qubits.Z(0);
 qubits.T(0); // phase
 qubits.S(0);
 
-qubits.U(0); // arbitrary unitary matrix
+qubits.U(0); // user-defined unitary matrix
 
 qubits.CNOT(0, 1); // (control, target)
 qubits.CY(0, 1);
@@ -129,11 +129,11 @@ result.txt:
 ```
 |00⟩ =  0               (0.000)
 |01⟩ =  0               (0.000)
-|10⟩ =  1.000 + 0.000i  (1.000)
+|10⟩ =  1.000 + 0.000i  (1.000) // meaning m_X was applied
 |11⟩ =  0               (0.000)
 ```
 
-circuit.txt:
+circuit.txt (auto-generated):
 ```
 ──H──*──U──*──H──M═══
      │     │         
