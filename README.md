@@ -1,12 +1,4 @@
-## Quantum Computer Simulator
-
-### About This Repository
-This is the second version of my original quantum computer simulator, Qumulator (2019).
-
-### Current Plan
-I'm currently writing more header files to implement an elementary level quantum computer simulator:
-
-Complex numbers -> Matrices -> Qubit -> Set of Qubits -> Quantum Logic Gates -> Quantum Algorithm
+# Quantum Computer Simulator
 
 ## Code
 
