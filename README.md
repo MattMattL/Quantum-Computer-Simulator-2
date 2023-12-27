@@ -122,7 +122,7 @@ result.txt:
 ```
 |00⟩ =  0               (0.000)
 |01⟩ =  0               (0.000)
-|10⟩ =  1.000 + 0.000i  (1.000) // meaning m_X was applied; the correct guess.
+|10⟩ =  1.000 + 0.000i  (1.000) // meaning m_X was applied - the correct answer.
 |11⟩ =  0               (0.000)
 ```
 
