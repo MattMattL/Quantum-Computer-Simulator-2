@@ -71,7 +71,10 @@ m1.conjugate();
 m1.dagger();
 ```
 
-### Example Code
+## Example Code
+
+### Super Dense Coding
+
 ```C++
 /*
     Implementing Super Dense Coding with Qmulator Library
