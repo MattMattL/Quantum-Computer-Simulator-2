@@ -79,11 +79,11 @@ m1.dagger();
 /*
     Implementing Super Dense Coding with Qmulator Library
 
-    This code demonstrates how one qubit can "carry" two classical bit worth of
-    information by entangling with another qubit and changing the state of only the first qubit.
+    This code demonstrates how one qubit can "carry" two classical bit worth of information
+    by entangling it with another qubit and changing the state of only the first qubit.
 
-    Measuring both qubits leaves the quantum system in one of the four possible
-    states depending on the gate applied to the first qubit.
+    Measuring both qubits leaves the quantum system in one of the four possible states
+    depending on the gate applied to the first qubit.
 */
 
 #include "Qmulator.hpp"
