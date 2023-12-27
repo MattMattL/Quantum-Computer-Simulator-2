@@ -1,4 +1,4 @@
-## Q-mulator V2
+## Quantum Computer Simulator
 
 ### About This Repository
 This is the second version of my original quantum computer simulator, Qumulator (2019).
