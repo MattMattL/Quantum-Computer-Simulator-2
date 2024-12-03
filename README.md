@@ -77,13 +77,12 @@ m1.dagger();
 
 ```C++
 /*
-    Implementing Super Dense Coding with Qmulator Library
+    This example script demonstrates super dense coding where only one qubit is manipulated to
+    carrry two classical bit worth of information.
 
-    This code demonstrates how one qubit can "carry" two classical bit worth of information
-    by entangling it with another qubit and changing the state of only the first qubit.
-
-    Measuring both qubits leaves the quantum system in one of the four possible states
-    depending on the gate applied to the first qubit.
+    Two qubits are entangled before one of them is sent out to the recipient. Measuring both
+    qubits leaves the quantum system in one of the four possible states depending on the gate
+    applied to the first qubit.
 */
 
 #include "Qmulator.hpp"
@@ -102,7 +101,7 @@ int main()
 	qubits.H(0);
 	qubits.CNOT(0, 1);
 
-	qubits.U(m_X, 0); // any of I, X, Z, iY
+	qubits.U(m_X, 0); // choose any of {I, X, Z, iY}
 
 	qubits.CNOT(0, 1);
 	qubits.H(0);
