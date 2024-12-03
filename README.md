@@ -125,7 +125,7 @@ result.txt:
 |11⟩ =  0               (0.000)
 ```
 
-circuit.txt (auto-generated):
+circuit.txt:
 ```
 ──H──*──U──*──H──M═══
      │     │         
