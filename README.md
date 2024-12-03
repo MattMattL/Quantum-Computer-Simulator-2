@@ -77,8 +77,8 @@ m1.dagger();
 
 ```C++
 /*
-    This example script demonstrates super dense coding where only one qubit is manipulated to
-    carrry two classical bit worth of information.
+    This example script demonstrates super dense coding where only one qubit is manipulated
+    to carrry two classical bit worth of information.
 
     Two qubits are entangled before one of them is sent out to the recipient. Measuring both
     qubits leaves the quantum system in one of the four possible states depending on the gate
